@@ -2,6 +2,7 @@ package com.github.kennedyoliveira.pastebin.settings;
 
 import com.github.kennedyoliveira.pastebin.UltimatePasteBinConstants;
 import com.github.kennedyoliveira.pastebin.i18n.MessageBundle;
+import com.github.kennedyoliveira.pastebin.service.PasteBinService;
 import com.github.kennedyoliveira.pastebin.service.ToolWindowService;
 import com.intellij.openapi.components.ServiceManager;
 import com.intellij.openapi.options.ConfigurationException;
@@ -62,13 +63,19 @@ public class PasteBinConfigurableSettings implements SearchableConfigurable {
 
     @Override
     public boolean isModified() {
-        return !pasteBinConfigurationForm.getConfiguration().equals(pasteBinConfigurationService.getPasteBinSettings()) ||
+        return changedAccountCredentials() ||
                 pasteBinConfigurationService.getTotalPastesToFetch() != ((int) pasteBinConfigurationForm.getPasteToFetch().getValue()) ||
                 !pasteBinConfigurationForm.getLanguage().getSelectedItem().equals(pasteBinConfigurationService.getCurrentLanguage());
     }
 
+    public boolean changedAccountCredentials() {
+        return !pasteBinConfigurationForm.getConfiguration().equals(pasteBinConfigurationService.getPasteBinSettings());
+    }
+
     @Override
     public void apply() throws ConfigurationException {
+        boolean changedAccountCredentials = changedAccountCredentials();
+
         pasteBinConfigurationService.setPasteBinSettings(pasteBinConfigurationForm.getConfiguration());
         pasteBinConfigurationService.setTotalPastesToFetch((Integer) pasteBinConfigurationForm.getPasteToFetch().getValue());
         pasteBinConfigurationService.setCurrentLanguage((String) pasteBinConfigurationForm.getLanguage().getSelectedItem());
@@ -77,6 +84,11 @@ public class PasteBinConfigurableSettings implements SearchableConfigurable {
         Locale.setDefault(MessageBundle.getLanguageLocale());
 
         UIUtil.invokeLaterIfNeeded(() -> {
+            if (changedAccountCredentials) {
+                PasteBinService pasteBinService = ServiceManager.getService(PasteBinService.class);
+                pasteBinService.invalidateCredentials();
+            }
+
             ToolWindowService service = ServiceManager.getService(ToolWindowService.class);
 
             service.fetchPastes();
