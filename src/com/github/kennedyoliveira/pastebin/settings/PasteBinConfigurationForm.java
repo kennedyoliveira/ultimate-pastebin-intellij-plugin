@@ -52,9 +52,11 @@ public class PasteBinConfigurationForm extends JPanel {
     private JFormattedTextField pasteToFetch;
     private JButton donateToHelpButton;
     private JButton helpTranslatingPluginButton;
+    private JButton reportButton;
 
     public PasteBinConfigurationForm(boolean canBeParent) {
         super(canBeParent);
+
         createListeners();
 
         PasteBinConfigurationService configurationService = ServiceManager.getService(PasteBinConfigurationService.class);
@@ -82,7 +84,6 @@ public class PasteBinConfigurationForm extends JPanel {
         } else {
             language.setSelectedItem("English");
         }
-
     }
 
     /**
@@ -96,6 +97,8 @@ public class PasteBinConfigurationForm extends JPanel {
         donateToHelpButton.addActionListener(e -> BrowserUtil.browse(UltimatePasteBinConstants.DONATION_URL));
 
         helpTranslatingPluginButton.addActionListener(e -> BrowserUtil.browse(UltimatePasteBinConstants.TRANSLATION_CONTRIBUTION_URL));
+
+        reportButton.addActionListener(e -> BrowserUtil.browse(UltimatePasteBinConstants.ISSUE_URL));
     }
 
     /**
@@ -141,10 +144,6 @@ public class PasteBinConfigurationForm extends JPanel {
         new Task.Backgroundable(null, MessageBundle.getMessage("ultimatepastebin.settings.login.validation.title"), false, PerformInBackgroundOption.DEAF) {
             @Override
             public void run(@NotNull ProgressIndicator indicator) {
-                Project[] openProjects = ProjectManager.getInstance().getOpenProjects();
-
-                boolean anyProjectOpen = openProjects.length > 0;
-
                 try {
                     // Manually creates a pastebin passing the credentials so it doesn't alter the configuration
                     new PasteBin(new AccountCredentials(devKey, username, new String(password))).fetchUserInformation();
@@ -153,8 +152,8 @@ public class PasteBinConfigurationForm extends JPanel {
                     String okMessage = MessageBundle.getMessage("ultimatepastebin.settings.login.ok.message");
 
                     UIUtil.invokeLaterIfNeeded(() -> {
-                        // When on MacOsX there are no projects open, for some reason intellij randomly shows or not the MessageBOX, so i'm showing with different messages that works everytime
-                        if (SystemInfo.isMac && !anyProjectOpen) {
+                        // When on MacOsX for some reason intellij randomly shows or not the MessageBOX, so i'm showing with different messages that works everytime
+                        if (SystemInfo.isMac) {
                             Messages.showIdeaMessageDialog(null, okMessage, okTitle, new String[]{"OK"}, 0, null, null);
                         } else {
                             Messages.showInfoMessage(okMessage, okTitle);
@@ -165,8 +164,8 @@ public class PasteBinConfigurationForm extends JPanel {
                     String errorTitle = MessageBundle.getMessage("ultimatepastebin.settings.login.error.title");
 
                     UIUtil.invokeLaterIfNeeded(() -> {
-                        // When on MacOsX there are no projects open, for some reason intellij randomly shows or not the MessageBOX, so i'm showing with different messages that works everytime
-                        if (SystemInfo.isMac && !anyProjectOpen) {
+                        // When on MacOsX for some reason intellij randomly shows or not the MessageBOX, so i'm showing with different messages that works everytime
+                        if (SystemInfo.isMac) {
                             Messages.showIdeaMessageDialog(null, e.getMessage() != null ? e.getMessage() : "Unknow", errorTitle, new String[]{"OK"}, 0, null, null);
                         } else {
                             Messages.showErrorDialog(e.getMessage(), errorTitle);
@@ -248,4 +247,5 @@ public class PasteBinConfigurationForm extends JPanel {
         pasteToFetch = new JFormattedTextField(formatter);
         pasteToFetch.setValue(50);
     }
+
 }

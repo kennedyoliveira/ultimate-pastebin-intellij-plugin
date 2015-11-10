@@ -19,11 +19,13 @@ import org.jetbrains.annotations.NotNull;
 
 import javax.swing.tree.DefaultMutableTreeNode;
 import javax.swing.tree.TreePath;
+import java.util.Comparator;
 import java.util.List;
 import java.util.Optional;
 
 import static com.github.kennedyoliveira.pastebin.i18n.MessageBundle.getMessage;
 import static com.intellij.util.ui.UIUtil.invokeLaterIfNeeded;
+import static java.util.Comparator.comparing;
 
 /**
  * @author kennedy
@@ -119,9 +121,8 @@ public class ToolWindowServiceImpl implements ToolWindowService {
                         // Get the trending pastes
                         List<Paste> pastes = pasteBinService.getPasteBin().listTrendingPastes();
 
-
                         // Create a paste node for each trending pastes and add to the trend node
-                        pastes.stream().map(PasteNodeUtil::createNodeForPaste).forEach(trendsNode::add);
+                        pastes.stream().sorted(comparing(Paste::getHits).reversed()).map(PasteNodeUtil::createNodeForPaste).forEach(trendsNode::add);
 
                         indicator.setFraction(0.5D);
                         indicator.setText(getMessage("ultimatepastebin.tasks.fetching.userpaste"));
@@ -206,7 +207,7 @@ public class ToolWindowServiceImpl implements ToolWindowService {
                         List<Paste> pastes = pasteBinService.getPasteBin().listTrendingPastes();
 
                         // Create a paste node for each trending pastes and add to the trend node
-                        pastes.stream().map(PasteNodeUtil::createNodeForPaste).forEach(trendsNode::add);
+                        pastes.stream().sorted(comparing(Paste::getHits).reversed()).map(PasteNodeUtil::createNodeForPaste).forEach(trendsNode::add);
 
                         invokeLaterIfNeeded(tree::updateUI);
                     }

@@ -1,5 +1,6 @@
 package com.github.kennedyoliveira.pastebin.ui;
 
+import com.github.kennedyoliveira.pastebin.UltimatePasteBinIcons;
 import com.github.kennedyoliveira.pastebin4j.Paste;
 import com.github.kennedyoliveira.pastebin4j.PasteVisibility;
 import com.intellij.openapi.util.IconLoader;
@@ -15,9 +16,9 @@ public class IconVisitor {
 
     public Icon visit(UserNode userNode) {
         if (userNode.getUserInformation() != null) {
-            return IconLoader.getIcon("/icons/user_loggedin.png");
+            return UltimatePasteBinIcons.USER_LOGGED_IN_ICON;
         } else {
-            return IconLoader.getIcon("/icons/user_loggedoff.png");
+            return UltimatePasteBinIcons.USER_LOGGED_OFF_ICON;
         }
     }
 
@@ -26,19 +27,19 @@ public class IconVisitor {
 
         // Custom icons representing the visibility
         if (paste.getVisibility() == PasteVisibility.PUBLIC) {
-            return IconLoader.getIcon("/icons/public_note.png");
+            return UltimatePasteBinIcons.PUBLIC_PASTE_ICON;
         } else if (paste.getVisibility() == PasteVisibility.UNLISTED) {
-            return IconLoader.getIcon("/icons/unlisted_note.png");
+            return UltimatePasteBinIcons.UNLISTED_PASTE_ICON;
         } else {
-            return IconLoader.getIcon("/icons/private_note.png");
+            return UltimatePasteBinIcons.PRIVATE_PASTE_ICON;
         }
     }
 
     public Icon visit(PasteInfoNode pasteInfoNode) {
-        return IconLoader.getIcon("/icons/note_info.png");
+        return UltimatePasteBinIcons.PASTE_INFO_ICON;
     }
 
     public Icon visit(TrendPasteNode trendPasteNode) {
-        return IconLoader.getIcon("/icons/trending.png");
+        return UltimatePasteBinIcons.TRENDING_PASTES_ICON;
     }
 }

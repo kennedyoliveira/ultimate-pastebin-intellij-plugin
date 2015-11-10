@@ -94,7 +94,7 @@ public class SavePasteContentToFileAction extends AbstractPasteSelectedAction {
     public void update(AnActionEvent e) {
         super.update(e);
 
-        e.getPresentation().setText("ultimatepastebin.actions.copypastecontentstofile.text");
-        e.getPresentation().setDescription("ultimatepastebin.actions.copypastecontentstofile.description");
+        e.getPresentation().setText(getMessage("ultimatepastebin.actions.copypastecontentstofile.text"));
+        e.getPresentation().setDescription(getMessage("ultimatepastebin.actions.copypastecontentstofile.description"));
     }
 }

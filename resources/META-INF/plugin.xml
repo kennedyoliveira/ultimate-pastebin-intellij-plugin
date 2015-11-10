@@ -32,7 +32,6 @@
         >
         </toolWindow>
 
-
         <applicationService
                 id="ultimatepastebin.toolWindowService"
                 serviceInterface="com.github.kennedyoliveira.pastebin.service.ToolWindowService"
@@ -51,6 +50,13 @@
                 serviceInterface="com.github.kennedyoliveira.pastebin.settings.PasteBinConfigurationService"
                 serviceImplementation="com.github.kennedyoliveira.pastebin.settings.PasteBinConfigurationServiceImpl"
         />
+
+        <!-- Intentions -->
+        <intentionAction>
+            <bundleName>messages</bundleName>
+            <categoryKey>ultimatepastebin.intentions.createpaste.categorykey</categoryKey>
+            <className>com.github.kennedyoliveira.pastebin.intention.CreatePasteIntention</className>
+        </intentionAction>
     </extensions>
 
     <application-components>
@@ -120,6 +126,11 @@
                 icon="/icons/show_in_editor.png"
                 description="Show the contents of a Paste in the Editor"/>
 
+        <action id="ultimatepastebin.DonateAction" class="com.github.kennedyoliveira.pastebin.action.DonateAction"
+                icon="/icons/donate.png"
+                text="Donate" description="Helps the developer donating! \o/">
+        </action>
+
         <!-- Toolbar menu for the toolwindow -->
         <group id="ultimatepastebin.ToolwindowToolbar" popup="true">
 
@@ -141,6 +152,9 @@
             <separator/>
 
             <reference id="ultimatepastebin.ShowSettingsAction"/>
+
+            <separator/>
+            <reference id="ultimatepastebin.DonateAction"/>
         </group>
 
         <!-- Pastebin menu on the tools menu -->
@@ -154,6 +168,10 @@
             <separator/>
 
             <reference id="ultimatepastebin.ShowSettingsAction"/>
+
+            <separator/>
+
+            <reference id="ultimatepastebin.DonateAction"/>
         </group>
 
         <group id="ultimatepastebin.ToolwindowPopupMenu" popup="true">
@@ -165,5 +183,4 @@
             <reference id="ultimatepastebin.deletePaste"/>
         </group>
     </actions>
-
 </idea-plugin>

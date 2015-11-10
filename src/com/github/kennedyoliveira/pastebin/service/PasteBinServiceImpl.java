@@ -57,9 +57,6 @@ public class PasteBinServiceImpl implements PasteBinService {
 
     @Override
     public void initialize() {
-        if (this.pasteBinSettings == null)
-            throw new IllegalStateException(getMessage("ultimatepastebin.accountcredentials.null"));
-
         if (this.pasteBinSettings == null || this.pasteBinSettings.getPasteBinAccountCredentials() == null)
             throw new IllegalStateException(getMessage("ultimatepastebin.accountcredentials.null"));
 

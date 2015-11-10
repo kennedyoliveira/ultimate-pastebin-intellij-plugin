@@ -1,20 +1,38 @@
 package com.github.kennedyoliveira.pastebin.ui.forms;
 
+import com.github.kennedyoliveira.pastebin.service.PasteBinService;
+import com.github.kennedyoliveira.pastebin.service.ToolWindowService;
+import com.github.kennedyoliveira.pastebin.utils.ClipboardUtils;
 import com.github.kennedyoliveira.pastebin4j.Paste;
 import com.github.kennedyoliveira.pastebin4j.PasteExpiration;
 import com.github.kennedyoliveira.pastebin4j.PasteHighLight;
 import com.github.kennedyoliveira.pastebin4j.PasteVisibility;
 import com.intellij.ide.highlighter.JavaFileType;
+import com.intellij.notification.Notification;
+import com.intellij.notification.NotificationListener;
+import com.intellij.notification.NotificationType;
+import com.intellij.notification.Notifications;
+import com.intellij.openapi.application.ApplicationManager;
+import com.intellij.openapi.components.ServiceManager;
+import com.intellij.openapi.editor.Document;
+import com.intellij.openapi.editor.Editor;
 import com.intellij.openapi.editor.EditorFactory;
 import com.intellij.openapi.editor.EditorSettings;
 import com.intellij.openapi.editor.ex.EditorEx;
+import com.intellij.openapi.editor.highlighter.EditorHighlighterFactory;
+import com.intellij.openapi.fileTypes.FileType;
+import com.intellij.openapi.progress.ProgressIndicator;
+import com.intellij.openapi.progress.Task;
 import com.intellij.openapi.project.Project;
 import com.intellij.openapi.project.ProjectManager;
 import com.intellij.openapi.ui.DialogWrapper;
+import com.intellij.openapi.util.AsyncResult;
 import com.intellij.openapi.util.Disposer;
 import com.intellij.ui.*;
 import com.intellij.uiDesigner.core.GridConstraints;
 import com.intellij.uiDesigner.core.GridLayoutManager;
+import com.intellij.util.Consumer;
+import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
 import javax.swing.*;
@@ -53,15 +71,16 @@ public class CreatePasteForm extends DialogWrapper {
     private JTextField pasteTitle;
     private JComboBox pasteExpiration;
     private JComboBox pasteVisibility;
-    private JEditorPane pasteContent;
     private JComboBox pasteHighlight;
+    private JPanel pasteContentPanel;
     private EditorTextField codeEditor;
+    private Editor customizedEditor;
     /**
      * Paste that will be created.
      */
     private Paste paste;
 
-    public CreatePasteForm(@Nullable Project project, Paste paste) {
+    public CreatePasteForm(@Nullable Project project, Paste paste, FileType fileType) {
         super(project);
 
         Objects.requireNonNull(paste);
@@ -80,10 +99,6 @@ public class CreatePasteForm extends DialogWrapper {
             setSelectedPasteHighlight(PasteHighLight.TEXT);
         }
 
-        if (paste.getContent() != null) {
-            pasteContent.setText(paste.getContent());
-        }
-
         pasteExpiration.addItem(getMessage("ultimatepastebin.paste.expiration.never"));
         pasteExpiration.addItem(getMessage("ultimatepastebin.paste.expiration.tenminutes"));
         pasteExpiration.addItem(getMessage("ultimatepastebin.paste.expiration.onehour"));
@@ -97,6 +112,85 @@ public class CreatePasteForm extends DialogWrapper {
         pasteVisibility.addItem(getMessage("ultimatepastebin.paste.visibility.unlisted"));
 
         init();
+
+        String content = paste.getContent() != null ? paste.getContent() : "";
+
+        Document document;
+
+        try {
+            document = EditorFactory.getInstance().createDocument(content);
+        } catch (Exception | AssertionError e) {
+            document = EditorFactory.getInstance().createDocument("");
+        }
+
+        codeEditor = new EditorTextField(document, project, fileType, false, false) {
+            @Override
+            protected EditorEx createEditor() {
+                EditorEx editor = super.createEditor();
+
+                editor.setHorizontalScrollbarVisible(true);
+                editor.setVerticalScrollbarVisible(true);
+
+                EditorSettings settings = editor.getSettings();
+                settings.setLineNumbersShown(true);
+
+                customizedEditor = editor;
+
+                return editor;
+            }
+        };
+
+        // Copied from the generated code
+        pasteContentPanel.add(codeEditor, new GridConstraints(0, 0, 1, 1, GridConstraints.ANCHOR_CENTER, GridConstraints.FILL_BOTH, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW, null, new Dimension(600, 325), null, 0, false));
+        pasteContentPanel.setMinimumSize(new Dimension(600, 325));
+
+        pasteTitle.requestFocusInWindow();
+    }
+
+
+    /**
+     * Show the create paste forms populated with the Paste info
+     *
+     * @param paste    Paste to be saved
+     * @param project  Current project
+     * @param fileType Type of the file for SyntaxHighLight
+     */
+    public static void createAndShowForm(Paste paste, Project project, FileType fileType) {
+        AsyncResult<Boolean> booleanAsyncResult = new CreatePasteForm(project, paste, fileType).showAndGetOk();
+
+        booleanAsyncResult.doWhenDone((Consumer<Boolean>) result -> {
+            if (result) {
+                new Task.Backgroundable(project, getMessage("ultimatepastebin.actions.createpaste.task.title"), false) {
+                    @Override
+                    public void run(@NotNull ProgressIndicator indicator) {
+                        try {
+                            PasteBinService service = ServiceManager.getService(PasteBinService.class);
+                            String url = service.getPasteBin().createPaste(paste);
+
+                            String message = getMessage("ultimatepastebin.actions.createpaste.ok.notification.message", url);
+
+                            ClipboardUtils.copyToClipboard(url);
+
+                            Notifications.Bus.notify(new Notification("Paste created",
+                                    "Ultimate PasteBin",
+                                    message,
+                                    NotificationType.INFORMATION,
+                                    NotificationListener.URL_OPENING_LISTENER), project);
+
+                            // Updates the pastes...
+                            ApplicationManager.getApplication().invokeLater(() -> {
+                                ServiceManager.getService(ToolWindowService.class).fetchUserPastes();
+                            });
+                        } catch (Exception e1) {
+                            Notifications.Bus.notify(new Notification("Error creating a paste",
+                                    "Ultimate PasteBin",
+                                    getMessage("ultimatepastebin.actions.createpaste.error.notification.message", e1.getMessage()),
+                                    NotificationType.ERROR));
+                        }
+                    }
+                }.queue();
+            }
+        });
     }
 
     @Nullable
@@ -113,30 +207,11 @@ public class CreatePasteForm extends DialogWrapper {
     protected void doOKAction() {
         // Updates the paste
         paste.setTitle(pasteTitle.getText());
-        paste.setContent(pasteContent.getText());
+        // paste.setContent(pasteContent.getText());
         paste.setHighLight((PasteHighLight) pasteHighlight.getSelectedItem());
         paste.setExpiration(pasteExpirationMap.get(pasteExpiration.getSelectedIndex()));
         paste.setVisibility(pasteVisibilityMap.get(pasteHighlight.getSelectedIndex()));
 
         super.doOKAction();
-    }
-
-    private void createUIComponents() {
-        codeEditor = new EditorTextField(EditorFactory.getInstance().createDocument("public class Zupa {\n\n public static void main(String[] args){\n\n}\n}"), ProjectManager.getInstance().getDefaultProject(), JavaFileType.INSTANCE, false, false) {
-            @Override
-            protected EditorEx createEditor() {
-                EditorEx editor = super.createEditor();
-
-                editor.setHorizontalScrollbarVisible(true);
-                editor.setVerticalScrollbarVisible(true);
-
-                EditorSettings settings = editor.getSettings();
-                settings.setLineNumbersShown(true);
-
-                return editor;
-            }
-        };
-        codeEditor.setAutoscrolls(true);
-
     }
 }

@@ -6,6 +6,11 @@ package com.github.kennedyoliveira.pastebin;
 public class UltimatePasteBinConstants {
 
     /**
+     * @deprecated Constants only class
+     */
+    private UltimatePasteBinConstants() {}
+
+    /**
      * URL For donating
      */
     public final static String DONATION_URL = "https://www.paypal.com/cgi-bin/webscr?cmd=_donations&business=CR4K3FDKKK5FA&lc=GB&item_name=Kennedy%20Oliveira&item_number=ultimate%2dpastebin&currency_code=USD&bn=PP%2dDonationsBF%3abtn_donate_LG%2egif%3aNonHosted";
