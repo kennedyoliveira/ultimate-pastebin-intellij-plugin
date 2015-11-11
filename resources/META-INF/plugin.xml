@@ -5,11 +5,17 @@
     <vendor email="kennedy.oliveira@outlook.com" url="https://github.com/kennedyoliveira">Kennedy Oliveira</vendor>
 
     <description><![CDATA[
-      Plugin for integration with PasteBin.<br>
+      <p>Best plugin ever for PasteBin in IntelliJ IDEA.</p>
+      <p>You'll love this plugin!</p>
+      <p>With this plugin you can easily see all your pastes, get links for them, create new pastes, download pastes,
+      open pastes in editor, see trending pastes and more!</p>
+      <p>Check the project page <a href="#">Ultimate PasteBin IntelliJ IDEA</a> to see some
+      pictures, examples and video sample!</p>
+      <p>If you like this plugin, make us happy by donating! <a href="#">Donate</a></p>
     ]]></description>
 
     <change-notes><![CDATA[
-      First Release.<br>
+      <p>Release Version 1.0.0.</p>
     ]]>
     </change-notes>
 
@@ -27,54 +33,54 @@
         <!-- Add your extensions here -->
         <toolWindow id="Ultimate PasteBin"
                     anchor="right"
-                    factoryClass="com.github.kennedyoliveira.pastebin.ui.UltimatePasteBinToolWindow"
+                    factoryClass="com.github.kennedyoliveira.ultimatepastebin.ui.UltimatePasteBinToolWindow"
                     icon="/icons/pastebin-icon.png"
         >
         </toolWindow>
 
         <applicationService
                 id="ultimatepastebin.toolWindowService"
-                serviceInterface="com.github.kennedyoliveira.pastebin.service.ToolWindowService"
-                serviceImplementation="com.github.kennedyoliveira.pastebin.service.ToolWindowServiceImpl"
+                serviceInterface="com.github.kennedyoliveira.ultimatepastebin.service.ToolWindowService"
+                serviceImplementation="com.github.kennedyoliveira.ultimatepastebin.service.ToolWindowServiceImpl"
         />
 
         <applicationService
                 id="ultimatepastebin.pastebinservice"
-                serviceInterface="com.github.kennedyoliveira.pastebin.service.PasteBinService"
-                serviceImplementation="com.github.kennedyoliveira.pastebin.service.PasteBinServiceImpl"
+                serviceInterface="com.github.kennedyoliveira.ultimatepastebin.service.PasteBinService"
+                serviceImplementation="com.github.kennedyoliveira.ultimatepastebin.service.PasteBinServiceImpl"
         />
 
-        <applicationConfigurable instance="com.github.kennedyoliveira.pastebin.settings.PasteBinConfigurableSettings"/>
+        <applicationConfigurable instance="com.github.kennedyoliveira.ultimatepastebin.settings.PasteBinConfigurableSettings"/>
         <applicationService
                 id="ultimatepastebin.configurationservice"
-                serviceInterface="com.github.kennedyoliveira.pastebin.settings.PasteBinConfigurationService"
-                serviceImplementation="com.github.kennedyoliveira.pastebin.settings.PasteBinConfigurationServiceImpl"
+                serviceInterface="com.github.kennedyoliveira.ultimatepastebin.settings.PasteBinConfigurationService"
+                serviceImplementation="com.github.kennedyoliveira.ultimatepastebin.settings.PasteBinConfigurationServiceImpl"
         />
 
         <!-- Intentions -->
         <intentionAction>
             <bundleName>messages</bundleName>
             <categoryKey>ultimatepastebin.intentions.createpaste.categorykey</categoryKey>
-            <className>com.github.kennedyoliveira.pastebin.intention.CreatePasteIntention</className>
+            <className>com.github.kennedyoliveira.ultimatepastebin.intention.CreatePasteIntention</className>
         </intentionAction>
     </extensions>
 
     <application-components>
         <component>
             <implementation-class>
-                com.github.kennedyoliveira.pastebin.component.UltimatePasteBin
+                com.github.kennedyoliveira.ultimatepastebin.component.UltimatePasteBin
             </implementation-class>
         </component>
     </application-components>
 
     <actions>
         <action id="ultimatepastebin.refreshPastes" icon="/actions/refresh.png"
-                class="com.github.kennedyoliveira.pastebin.action.RefreshPastesAction"
+                class="com.github.kennedyoliveira.ultimatepastebin.action.RefreshPastesAction"
                 text="Refresh Pastes" description="Refreshs the user and trendings pastes information">
         </action>
 
         <action id="ultimatepastebin.createPaste"
-                class="com.github.kennedyoliveira.pastebin.action.CreatePasteAction"
+                class="com.github.kennedyoliveira.ultimatepastebin.action.CreatePasteAction"
                 text="Create Paste" description="Creates a new paste and copy the link to the clipboard"
                 icon="/icons/new_paste.png">
             <!-- Group for file editors right click menu -->
@@ -85,48 +91,48 @@
 
         <action id="ultimatepastebin.ShowSettingsAction"
                 icon="/icons/settings.png"
-                class="com.github.kennedyoliveira.pastebin.action.ShowSettingsAction" text="Show Settings"
+                class="com.github.kennedyoliveira.ultimatepastebin.action.ShowSettingsAction" text="Show Settings"
                 description="Show the settings for Ultimate PasteBin">
         </action>
 
         <action id="ultimatepastebin.OpenPasteInBrowser"
                 icon="/xml/browsers/chrome16.png"
-                class="com.github.kennedyoliveira.pastebin.action.OpenPasteInBrowserAction" text="Open Paste in Browser"
+                class="com.github.kennedyoliveira.ultimatepastebin.action.OpenPasteInBrowserAction" text="Open Paste in Browser"
                 description="Open the selected paste in the default system browser."/>
 
-        <action class="com.github.kennedyoliveira.pastebin.action.CopyPasteUrlAction" id="ultimatepastebin.copyPasteUrl"
+        <action class="com.github.kennedyoliveira.ultimatepastebin.action.CopyPasteUrlAction" id="ultimatepastebin.copyPasteUrl"
                 icon="/actions/copy_dark.png"
                 text="Copy Paste URL"
                 description="Copies the Paste's URL to the clipboard.">
         </action>
 
-        <action class="com.github.kennedyoliveira.pastebin.action.CopyPasteContentAction"
+        <action class="com.github.kennedyoliveira.ultimatepastebin.action.CopyPasteContentAction"
                 id="ultimatepastebin.CopyPasteContent"
-                icon="/actions/download.png"
+                icon="/icons/clipboard.png"
                 text="Copy Paste Contents"
                 description="Downloads the paste content and copy to clipboard."
         >
         </action>
 
         <action id="ultimatepastebin.SavePasteContentToFile"
-                icon="/actions/menu-saveall.png"
-                class="com.github.kennedyoliveira.pastebin.action.SavePasteContentToFileAction"
+                icon="/actions/download.png"
+                class="com.github.kennedyoliveira.ultimatepastebin.action.SavePasteContentToFileAction"
                 text="Save Paste Contents to File"
                 description="Download and saves the contents of a paste in a file.">
         </action>
 
-        <action class="com.github.kennedyoliveira.pastebin.action.DeletePasteAction" id="ultimatepastebin.deletePaste"
+        <action class="com.github.kennedyoliveira.ultimatepastebin.action.DeletePasteAction" id="ultimatepastebin.deletePaste"
                 text="Delete paste" description="Deletes a paste. This action can't be undone!"
                 icon="/actions/delete.png">
         </action>
 
-        <action class="com.github.kennedyoliveira.pastebin.action.ShowInEditorAction"
+        <action class="com.github.kennedyoliveira.ultimatepastebin.action.ShowInEditorAction"
                 id="ultimatepastebin.ShowInEditor"
                 text="Show Contents in Editor"
                 icon="/icons/show_in_editor.png"
                 description="Show the contents of a Paste in the Editor"/>
 
-        <action id="ultimatepastebin.DonateAction" class="com.github.kennedyoliveira.pastebin.action.DonateAction"
+        <action id="ultimatepastebin.DonateAction" class="com.github.kennedyoliveira.ultimatepastebin.action.DonateAction"
                 icon="/icons/donate.png"
                 text="Donate" description="Helps the developer donating! \o/">
         </action>

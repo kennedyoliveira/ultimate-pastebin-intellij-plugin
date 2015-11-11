@@ -1,0 +1,270 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<form xmlns="http://www.intellij.com/uidesigner/form/" version="1" bind-to-class="com.github.kennedyoliveira.ultimatepastebin.settings.PasteBinConfigurationForm">
+  <grid id="74e0c" binding="contentPanel" layout-manager="GridLayoutManager" row-count="4" column-count="1" same-size-horizontally="false" same-size-vertically="false" hgap="-1" vgap="-1">
+    <margin top="0" left="0" bottom="0" right="0"/>
+    <constraints>
+      <xy x="20" y="20" width="825" height="450"/>
+    </constraints>
+    <properties>
+      <minimumSize width="825" height="450"/>
+      <preferredSize width="825" height="450"/>
+    </properties>
+    <clientProperties>
+      <BorderFactoryClass class="java.lang.String" value=""/>
+    </clientProperties>
+    <border type="none"/>
+    <children>
+      <grid id="27dc6" binding="accountCredentialsPanel" layout-manager="GridLayoutManager" row-count="4" column-count="4" same-size-horizontally="false" same-size-vertically="false" hgap="-1" vgap="-1">
+        <margin top="0" left="5" bottom="0" right="10"/>
+        <constraints>
+          <grid row="0" column="0" row-span="1" col-span="1" vsize-policy="3" hsize-policy="2" anchor="0" fill="3" indent="0" use-parent-layout="false"/>
+        </constraints>
+        <properties>
+          <focusTraversalPolicyProvider value="false"/>
+        </properties>
+        <clientProperties>
+          <BorderFactoryClass class="java.lang.String" value="com.intellij.ui.IdeBorderFactory$PlainSmallWithIndent"/>
+        </clientProperties>
+        <border type="none" title-resource-bundle="messages" title-key="ultimatepastebin.settings.form.accountcredentials.title">
+          <font/>
+        </border>
+        <children>
+          <component id="26ef0" class="javax.swing.JLabel">
+            <constraints>
+              <grid row="0" column="0" row-span="1" col-span="1" vsize-policy="0" hsize-policy="0" anchor="8" fill="0" indent="0" use-parent-layout="false"/>
+            </constraints>
+            <properties>
+              <labelFor value="2131b"/>
+              <text resource-bundle="messages" key="ultimatepastebin.settings.form.username"/>
+            </properties>
+          </component>
+          <component id="2131b" class="javax.swing.JTextField" binding="userName">
+            <constraints>
+              <grid row="0" column="1" row-span="1" col-span="3" vsize-policy="0" hsize-policy="6" anchor="8" fill="1" indent="0" use-parent-layout="false">
+                <preferred-size width="150" height="-1"/>
+              </grid>
+            </constraints>
+            <properties>
+              <margin top="0" left="0" bottom="0" right="0"/>
+              <toolTipText resource-bundle="messages" key="ultimatepastebin.settings.form.username.tooltip"/>
+            </properties>
+          </component>
+          <component id="4d79a" class="javax.swing.JLabel">
+            <constraints>
+              <grid row="1" column="0" row-span="1" col-span="1" vsize-policy="0" hsize-policy="0" anchor="8" fill="0" indent="0" use-parent-layout="false"/>
+            </constraints>
+            <properties>
+              <labelFor value="de004"/>
+              <text resource-bundle="messages" key="ultimatepastebin.settings.form.password"/>
+            </properties>
+          </component>
+          <component id="fa1f2" class="javax.swing.JLabel">
+            <constraints>
+              <grid row="2" column="0" row-span="1" col-span="1" vsize-policy="0" hsize-policy="0" anchor="8" fill="0" indent="0" use-parent-layout="false"/>
+            </constraints>
+            <properties>
+              <labelFor value="683d8"/>
+              <text resource-bundle="messages" key="ultimatepastebin.settings.form.devkey"/>
+            </properties>
+          </component>
+          <component id="683d8" class="javax.swing.JTextField" binding="devkey">
+            <constraints>
+              <grid row="2" column="1" row-span="1" col-span="2" vsize-policy="0" hsize-policy="6" anchor="8" fill="1" indent="0" use-parent-layout="false">
+                <preferred-size width="150" height="-1"/>
+              </grid>
+            </constraints>
+            <properties>
+              <toolTipText resource-bundle="messages" key="ultimatepastebin.settings.form.devkey.tooltip"/>
+            </properties>
+          </component>
+          <component id="de004" class="javax.swing.JPasswordField" binding="password">
+            <constraints>
+              <grid row="1" column="1" row-span="1" col-span="3" vsize-policy="0" hsize-policy="6" anchor="8" fill="1" indent="0" use-parent-layout="false">
+                <preferred-size width="150" height="-1"/>
+              </grid>
+            </constraints>
+            <properties>
+              <toolTipText resource-bundle="messages" key="ultimatepastebin.settings.form.password.tooltip"/>
+            </properties>
+          </component>
+          <component id="433c4" class="javax.swing.JButton" binding="checkAccountCredentialsButton" default-binding="true">
+            <constraints>
+              <grid row="3" column="0" row-span="1" col-span="2" vsize-policy="0" hsize-policy="0" anchor="8" fill="0" indent="0" use-parent-layout="false"/>
+            </constraints>
+            <properties>
+              <icon value="icons/checkedBlack.png"/>
+              <iconTextGap value="4"/>
+              <text resource-bundle="messages" key="ultimatepastebin.settings.form.checkaccount"/>
+              <toolTipText resource-bundle="messages" key="ultimatepastebin.settings.form.checkaccount.tooltip"/>
+            </properties>
+          </component>
+          <component id="be285" class="javax.swing.JButton" binding="getDevKeyButton">
+            <constraints>
+              <grid row="2" column="3" row-span="1" col-span="1" vsize-policy="0" hsize-policy="2" anchor="4" fill="0" indent="0" use-parent-layout="false"/>
+            </constraints>
+            <properties>
+              <focusTraversalPolicyProvider value="false"/>
+              <hideActionText value="false"/>
+              <icon value="icons/help_small.png"/>
+              <text resource-bundle="messages" key="ultimatepastebin.settings.form.getdevkey"/>
+              <toolTipText resource-bundle="messages" key="ultimatepastebin.settings.form.getdevkey.tooltip"/>
+            </properties>
+          </component>
+        </children>
+      </grid>
+      <grid id="aac9d" binding="generalSettingsPanel" layout-manager="GridLayoutManager" row-count="2" column-count="3" same-size-horizontally="false" same-size-vertically="false" hgap="-1" vgap="-1">
+        <margin top="0" left="5" bottom="0" right="10"/>
+        <constraints>
+          <grid row="1" column="0" row-span="1" col-span="1" vsize-policy="3" hsize-policy="2" anchor="0" fill="3" indent="0" use-parent-layout="false"/>
+        </constraints>
+        <properties/>
+        <clientProperties>
+          <BorderFactoryClass class="java.lang.String" value="com.intellij.ui.IdeBorderFactory$PlainSmallWithIndent"/>
+          <html.disable class="java.lang.Boolean" value="false"/>
+        </clientProperties>
+        <border type="none" title-resource-bundle="messages" title-key="ultimatepastebin.settings.form.generalsettings">
+          <font/>
+          <title-color color="-16777216"/>
+        </border>
+        <children>
+          <component id="f06a4" class="javax.swing.JLabel">
+            <constraints>
+              <grid row="0" column="0" row-span="1" col-span="1" vsize-policy="0" hsize-policy="0" anchor="8" fill="0" indent="0" use-parent-layout="false"/>
+            </constraints>
+            <properties>
+              <labelFor value="30cc8"/>
+              <text resource-bundle="messages" key="ultimatepastebin.settings.form.language"/>
+            </properties>
+          </component>
+          <component id="30cc8" class="javax.swing.JComboBox" binding="language">
+            <constraints>
+              <grid row="0" column="1" row-span="1" col-span="1" vsize-policy="0" hsize-policy="2" anchor="8" fill="0" indent="0" use-parent-layout="false">
+                <minimum-size width="200" height="-1"/>
+                <preferred-size width="200" height="-1"/>
+              </grid>
+            </constraints>
+            <properties>
+              <model/>
+            </properties>
+          </component>
+          <component id="c6280" class="javax.swing.JLabel">
+            <constraints>
+              <grid row="1" column="0" row-span="1" col-span="1" vsize-policy="0" hsize-policy="0" anchor="8" fill="0" indent="0" use-parent-layout="false"/>
+            </constraints>
+            <properties>
+              <labelFor value="c803"/>
+              <text resource-bundle="messages" key="ultimatepastebin.settings.form.pastestofetch"/>
+            </properties>
+          </component>
+          <component id="c803" class="javax.swing.JFormattedTextField" binding="pasteToFetch" custom-create="true">
+            <constraints>
+              <grid row="1" column="1" row-span="1" col-span="1" vsize-policy="0" hsize-policy="3" anchor="8" fill="0" indent="0" use-parent-layout="false">
+                <preferred-size width="200" height="28"/>
+              </grid>
+            </constraints>
+            <properties/>
+          </component>
+          <component id="5d5e7" class="javax.swing.JLabel">
+            <constraints>
+              <grid row="1" column="2" row-span="1" col-span="1" vsize-policy="0" hsize-policy="4" anchor="0" fill="1" indent="0" use-parent-layout="false"/>
+            </constraints>
+            <properties>
+              <icon value="icons/help_small.png"/>
+              <text resource-bundle="messages" key="ultimatepastebin.settings.form.pastestofetch.help"/>
+            </properties>
+          </component>
+          <component id="b7326" class="javax.swing.JLabel">
+            <constraints>
+              <grid row="0" column="2" row-span="1" col-span="1" vsize-policy="0" hsize-policy="0" anchor="8" fill="0" indent="0" use-parent-layout="false"/>
+            </constraints>
+            <properties>
+              <icon value="icons/help_small.png"/>
+              <text resource-bundle="messages" key="ultimatepastebin.settings.form.language.help"/>
+            </properties>
+          </component>
+        </children>
+      </grid>
+      <grid id="484a6" layout-manager="GridLayoutManager" row-count="3" column-count="2" same-size-horizontally="false" same-size-vertically="false" hgap="10" vgap="10">
+        <margin top="0" left="5" bottom="0" right="5"/>
+        <constraints>
+          <grid row="2" column="0" row-span="1" col-span="1" vsize-policy="3" hsize-policy="2" anchor="0" fill="3" indent="0" use-parent-layout="false"/>
+        </constraints>
+        <properties/>
+        <clientProperties>
+          <BorderFactoryClass class="java.lang.String" value="com.intellij.ui.IdeBorderFactory$PlainSmallWithIndent"/>
+        </clientProperties>
+        <border type="none" title-resource-bundle="messages" title-key="ultimatepastebin.settings.form.contribution"/>
+        <children>
+          <component id="38859" class="javax.swing.JButton" binding="donateToHelpButton" default-binding="true">
+            <constraints>
+              <grid row="0" column="0" row-span="1" col-span="1" vsize-policy="0" hsize-policy="0" anchor="8" fill="0" indent="0" use-parent-layout="false">
+                <minimum-size width="225" height="-1"/>
+                <preferred-size width="225" height="28"/>
+              </grid>
+            </constraints>
+            <properties>
+              <icon value="icons/donate.png"/>
+              <text resource-bundle="messages" key="ultimatepastebin.settings.form.donate"/>
+            </properties>
+          </component>
+          <component id="5b08b" class="javax.swing.JLabel">
+            <constraints>
+              <grid row="0" column="1" row-span="1" col-span="1" vsize-policy="0" hsize-policy="3" anchor="8" fill="0" indent="0" use-parent-layout="false"/>
+            </constraints>
+            <properties>
+              <text resource-bundle="messages" key="ultimatepastebin.settings.form.donation.help"/>
+            </properties>
+          </component>
+          <component id="c1540" class="javax.swing.JButton" binding="helpTranslatingPluginButton" default-binding="true">
+            <constraints>
+              <grid row="1" column="0" row-span="1" col-span="1" vsize-policy="0" hsize-policy="0" anchor="8" fill="0" indent="0" use-parent-layout="false">
+                <minimum-size width="225" height="-1"/>
+                <preferred-size width="225" height="28"/>
+              </grid>
+            </constraints>
+            <properties>
+              <icon value="icons/language.png"/>
+              <text resource-bundle="messages" key="ultimatepastebin.settings.form.helptranslate"/>
+            </properties>
+          </component>
+          <component id="e6cc8" class="javax.swing.JLabel">
+            <constraints>
+              <grid row="1" column="1" row-span="1" col-span="1" vsize-policy="0" hsize-policy="0" anchor="8" fill="0" indent="0" use-parent-layout="false"/>
+            </constraints>
+            <properties>
+              <text resource-bundle="messages" key="ultimatepastebin.settings.form.helptranslate.help"/>
+            </properties>
+          </component>
+          <component id="b631c" class="javax.swing.JLabel">
+            <constraints>
+              <grid row="2" column="1" row-span="1" col-span="1" vsize-policy="0" hsize-policy="0" anchor="8" fill="0" indent="0" use-parent-layout="false"/>
+            </constraints>
+            <properties>
+              <text resource-bundle="messages" key="ultimatepastebin.settings.form.report.help"/>
+            </properties>
+          </component>
+          <component id="19454" class="javax.swing.JButton" binding="reportButton" default-binding="true">
+            <constraints>
+              <grid row="2" column="0" row-span="1" col-span="1" vsize-policy="0" hsize-policy="0" anchor="8" fill="0" indent="0" use-parent-layout="false">
+                <minimum-size width="225" height="-1"/>
+                <preferred-size width="225" height="-1"/>
+              </grid>
+            </constraints>
+            <properties>
+              <hideActionText value="false"/>
+              <horizontalAlignment value="0"/>
+              <horizontalTextPosition value="11"/>
+              <icon value="icons/report.png"/>
+              <text resource-bundle="messages" key="ultimatepastebin.settings.form.report"/>
+            </properties>
+          </component>
+        </children>
+      </grid>
+      <vspacer id="f83ba">
+        <constraints>
+          <grid row="3" column="0" row-span="1" col-span="1" vsize-policy="6" hsize-policy="1" anchor="0" fill="2" indent="0" use-parent-layout="false"/>
+        </constraints>
+      </vspacer>
+    </children>
+  </grid>
+</form>

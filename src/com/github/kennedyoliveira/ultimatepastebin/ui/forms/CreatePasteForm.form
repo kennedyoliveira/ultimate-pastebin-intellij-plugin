@@ -1,0 +1,120 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<form xmlns="http://www.intellij.com/uidesigner/form/" version="1" bind-to-class="com.github.kennedyoliveira.ultimatepastebin.ui.forms.CreatePasteForm">
+  <grid id="27dc6" binding="principalPanel" layout-manager="GridLayoutManager" row-count="5" column-count="2" same-size-horizontally="false" same-size-vertically="false" hgap="15" vgap="15">
+    <margin top="10" left="10" bottom="10" right="10"/>
+    <constraints>
+      <xy x="20" y="20" width="704" height="545"/>
+    </constraints>
+    <properties>
+      <alignmentX value="0.5"/>
+      <verifyInputWhenFocusTarget value="false"/>
+    </properties>
+    <border type="none"/>
+    <children>
+      <grid id="d5d77" layout-manager="GridLayoutManager" row-count="4" column-count="2" same-size-horizontally="false" same-size-vertically="false" hgap="-1" vgap="-1">
+        <margin top="0" left="0" bottom="0" right="0"/>
+        <constraints>
+          <grid row="0" column="0" row-span="4" col-span="2" vsize-policy="1" hsize-policy="3" anchor="0" fill="3" indent="0" use-parent-layout="false"/>
+        </constraints>
+        <properties/>
+        <clientProperties>
+          <BorderFactoryClass class="java.lang.String" value="com.intellij.ui.IdeBorderFactory$PlainSmallWithIndent"/>
+        </clientProperties>
+        <border type="none" title="Paste Configuration"/>
+        <children>
+          <component id="57308" class="javax.swing.JLabel">
+            <constraints>
+              <grid row="0" column="0" row-span="1" col-span="1" vsize-policy="0" hsize-policy="0" anchor="8" fill="0" indent="0" use-parent-layout="false"/>
+            </constraints>
+            <properties>
+              <labelFor value="243e1"/>
+              <text resource-bundle="messages" key="ultimatepastebin.createpaste.form.label.pastetitle"/>
+            </properties>
+          </component>
+          <component id="cf89d" class="javax.swing.JLabel">
+            <constraints>
+              <grid row="1" column="0" row-span="1" col-span="1" vsize-policy="0" hsize-policy="0" anchor="8" fill="0" indent="0" use-parent-layout="false"/>
+            </constraints>
+            <properties>
+              <labelFor value="e10c3"/>
+              <text resource-bundle="messages" key="ultimatepastebin.createpaste.form.label.pasteexpiration"/>
+            </properties>
+          </component>
+          <component id="e10c3" class="javax.swing.JComboBox" binding="pasteExpiration">
+            <constraints>
+              <grid row="1" column="1" row-span="1" col-span="1" vsize-policy="0" hsize-policy="2" anchor="8" fill="1" indent="0" use-parent-layout="false"/>
+            </constraints>
+            <properties>
+              <model/>
+              <toolTipText resource-bundle="messages" key="ultimatepastebin.createpaste.form.tooltip.expiration"/>
+            </properties>
+          </component>
+          <component id="243e1" class="javax.swing.JTextField" binding="pasteTitle">
+            <constraints>
+              <grid row="0" column="1" row-span="1" col-span="1" vsize-policy="0" hsize-policy="6" anchor="8" fill="1" indent="0" use-parent-layout="false">
+                <preferred-size width="150" height="-1"/>
+              </grid>
+            </constraints>
+            <properties>
+              <focusCycleRoot value="true"/>
+              <preferredSize width="400" height="28"/>
+              <text value=""/>
+              <toolTipText resource-bundle="messages" key="ultimatepastebin.createpaste.form.tooltip.pastetitle"/>
+            </properties>
+          </component>
+          <component id="2434e" class="javax.swing.JLabel">
+            <constraints>
+              <grid row="2" column="0" row-span="1" col-span="1" vsize-policy="0" hsize-policy="0" anchor="8" fill="0" indent="0" use-parent-layout="false"/>
+            </constraints>
+            <properties>
+              <labelFor value="fa7e0"/>
+              <text resource-bundle="messages" key="ultimatepastebin.createpaste.form.label.pastevisibility"/>
+            </properties>
+          </component>
+          <component id="fa7e0" class="javax.swing.JComboBox" binding="pasteVisibility">
+            <constraints>
+              <grid row="2" column="1" row-span="1" col-span="1" vsize-policy="0" hsize-policy="2" anchor="8" fill="1" indent="0" use-parent-layout="false"/>
+            </constraints>
+            <properties>
+              <editable value="false"/>
+              <model/>
+              <toolTipText resource-bundle="messages" key="ultimatepastebin.createpaste.form.tooltip.visibility"/>
+            </properties>
+          </component>
+          <component id="d6dd9" class="javax.swing.JLabel">
+            <constraints>
+              <grid row="3" column="0" row-span="1" col-span="1" vsize-policy="0" hsize-policy="0" anchor="8" fill="0" indent="0" use-parent-layout="false"/>
+            </constraints>
+            <properties>
+              <labelFor value="bbe7c"/>
+              <text resource-bundle="messages" key="ultimatepastebin.createpaste.form.label.syntaxhighligh"/>
+            </properties>
+          </component>
+          <component id="bbe7c" class="javax.swing.JComboBox" binding="pasteHighlight">
+            <constraints>
+              <grid row="3" column="1" row-span="1" col-span="1" vsize-policy="0" hsize-policy="2" anchor="8" fill="1" indent="0" use-parent-layout="false"/>
+            </constraints>
+            <properties>
+              <lightWeightPopupEnabled value="true"/>
+              <maximumRowCount value="8"/>
+              <model/>
+              <toolTipText resource-bundle="messages" key="ultimatepastebin.createpaste.form.tooltip.syntaxhighlight"/>
+            </properties>
+          </component>
+        </children>
+      </grid>
+      <grid id="91e09" binding="pasteContentPanel" layout-manager="GridLayoutManager" row-count="1" column-count="1" same-size-horizontally="false" same-size-vertically="false" hgap="-1" vgap="-1">
+        <margin top="0" left="0" bottom="0" right="0"/>
+        <constraints>
+          <grid row="4" column="0" row-span="1" col-span="2" vsize-policy="3" hsize-policy="3" anchor="0" fill="3" indent="0" use-parent-layout="false"/>
+        </constraints>
+        <properties/>
+        <clientProperties>
+          <BorderFactoryClass class="java.lang.String" value="com.intellij.ui.IdeBorderFactory$PlainSmallWithIndent"/>
+        </clientProperties>
+        <border type="none" title-resource-bundle="messages" title-key="ultimatepastebin.createpaste.form.pastecontent"/>
+        <children/>
+      </grid>
+    </children>
+  </grid>
+</form>
