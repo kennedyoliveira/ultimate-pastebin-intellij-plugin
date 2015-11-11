@@ -33,6 +33,7 @@ import java.awt.*;
 import java.io.IOException;
 
 import static com.github.kennedyoliveira.pastebin.i18n.MessageBundle.getMessage;
+import static com.github.kennedyoliveira.pastebin.utils.SyntaxHighlighUtils.getHighlighByFileExtension;
 
 /**
  * Created by kennedy on 11/6/15.
@@ -61,8 +62,11 @@ public class CreatePasteAction extends AnAction {
         if (selectedFiles != null && selectedFiles.length == 1 && !selectedFiles[0].isDirectory()) {
             String extension = selectedFiles[0].getExtension();
             fileType = selectedFiles[0].getFileType();
+            String defaultFileExtension = fileType.getDefaultExtension();
 
-            paste.setHighLight(SyntaxHighlighUtils.getHighlighByFileExtension(extension).orElse(PasteHighLight.TEXT));
+            // Try to get by the default file extension, if not found, try to get by the file extension, if not found too,
+            // then go with text
+            paste.setHighLight(getHighlighByFileExtension(defaultFileExtension).orElse(getHighlighByFileExtension(extension).orElse(PasteHighLight.TEXT)));
 
             // If there's no content selected, then i set the content of the selected file
             if (paste.getContent() == null) {

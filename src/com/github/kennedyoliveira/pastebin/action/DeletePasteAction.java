@@ -1,5 +1,6 @@
 package com.github.kennedyoliveira.pastebin.action;
 
+import com.github.kennedyoliveira.pastebin.UltimatePasteBinIcons;
 import com.github.kennedyoliveira.pastebin.i18n.MessageBundle;
 import com.github.kennedyoliveira.pastebin.service.PasteBinService;
 import com.github.kennedyoliveira.pastebin.service.ToolWindowService;
@@ -34,9 +35,12 @@ public class DeletePasteAction extends AbstractPasteSelectedAction {
         if (selectedPaste.isPresent()) {
             Paste paste = selectedPaste.get();
 
-            int resp = Messages.showOkCancelDialog(getMessage("ultimatepastebin.actions.deletepaste.confirmation.message", paste.getTitle()),
+            int resp = Messages.showOkCancelDialog(e.getProject(),
+                                                   getMessage("ultimatepastebin.actions.deletepaste.confirmation.message", paste.getTitle()),
                                                    getMessage("ultimatepastebin.actions.deletepaste.confirmation.title"),
-                                                   PlatformIcons.WARNING_INTRODUCTION_ICON);
+                                                   getMessage("ultimatepastebin.ok"),
+                                                   getMessage("ultimatepastebin.cancel"),
+                                                   Messages.getWarningIcon());
 
             if (resp == Messages.OK) {
                 new Task.Backgroundable(e.getProject(), getMessage("ultimatepastebin.actions.deletepaste.task.title", paste.getTitle()), false) {

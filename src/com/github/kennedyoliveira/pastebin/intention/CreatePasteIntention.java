@@ -2,7 +2,10 @@ package com.github.kennedyoliveira.pastebin.intention;
 
 import com.github.kennedyoliveira.pastebin.UltimatePasteBinIcons;
 import com.github.kennedyoliveira.pastebin.ui.forms.CreatePasteForm;
+import com.github.kennedyoliveira.pastebin.utils.SyntaxHighlighUtils;
 import com.github.kennedyoliveira.pastebin4j.Paste;
+import com.github.kennedyoliveira.pastebin4j.PasteHighLight;
+import com.intellij.codeInsight.daemon.impl.analysis.HighlightUtil;
 import com.intellij.codeInsight.intention.IntentionAction;
 import com.intellij.openapi.actionSystem.ActionManager;
 import com.intellij.openapi.editor.Editor;
@@ -23,6 +26,7 @@ import org.jetbrains.annotations.NotNull;
 import javax.swing.*;
 
 import static com.github.kennedyoliveira.pastebin.i18n.MessageBundle.getMessage;
+import static com.github.kennedyoliveira.pastebin.utils.SyntaxHighlighUtils.getHighlighByFileExtension;
 
 /**
  * @author kennedy
@@ -58,13 +62,13 @@ public class CreatePasteIntention implements IntentionAction, Iconable {
             paste.setContent(editor.getDocument().getText());
         }
 
-        FileType fileType = PlainTextFileType.INSTANCE;
+        FileType fileType = file.getFileType();
+        String fileExtension = file.getVirtualFile().getExtension();
+        String defaultFileExtension = file.getFileType().getDefaultExtension();
 
-
-        if (editor instanceof EditorImpl) {
-            VirtualFile virtualFile = ((EditorImpl) editor).getVirtualFile();
-            fileType = virtualFile.getFileType();
-        }
+        // Try to get by the default file extension, if not found, try to get by the file extension, if not found too,
+        // then go with text
+        paste.setHighLight(getHighlighByFileExtension(defaultFileExtension).orElse(getHighlighByFileExtension(fileExtension).orElse(PasteHighLight.TEXT)));
 
         CreatePasteForm.createAndShowForm(paste, project, fileType);
     }

@@ -19,6 +19,19 @@ public class SyntaxHighlighUtils {
 
     static {
         highLightByFileType = Arrays.stream(PasteHighLight.values()).collect(toMap(p -> p.toString().toLowerCase(), identity(), (p1, p2) -> p1));
+
+        // Some especial cases
+        highLightByFileType.put("html", PasteHighLight.HTML_5);
+        highLightByFileType.put("xhtml", PasteHighLight.HTML_5);
+        highLightByFileType.put("htm", PasteHighLight.HTML);
+        highLightByFileType.put("html", PasteHighLight.HTML_5);
+        highLightByFileType.put("yml", PasteHighLight.YAML);
+        highLightByFileType.put("rb", PasteHighLight.Ruby);
+        highLightByFileType.put("py", PasteHighLight.Python);
+        highLightByFileType.put("erb", PasteHighLight.Rails);
+        highLightByFileType.put("rhtml", PasteHighLight.Rails);
+        highLightByFileType.put("rjs", PasteHighLight.Rails);
+        highLightByFileType.put("rxml", PasteHighLight.Rails);
     }
 
     /**

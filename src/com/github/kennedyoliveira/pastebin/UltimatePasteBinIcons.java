@@ -33,5 +33,5 @@ public class UltimatePasteBinIcons {
 
     public static final Icon TRENDING_PASTES_ICON = IconLoader.getIcon("/icons/trending.png");
 
-
+    public static final Icon WARNING_ICON = IconLoader.getIcon("/icons/warning.png");
 }
