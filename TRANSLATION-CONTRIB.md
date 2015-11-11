@@ -61,7 +61,7 @@ public class MessageBundle {
         availableTranslations.put("My Language", new Locale.Builder().setLanguage("lg").build());
     }
     
-    // rest of the class omited....
+    // rest of the class omitted....
 }
 ```
 
