@@ -7,7 +7,7 @@
 Currently the plugin only supports the languages below:
 
 - English (Native By Kennedy Oliveira - Owner and Plugin Developer)
-- Portugues Brasileiro (By Aninha Pessoni)
+- Português Brasileiro (By Aninha Pessoni)
 
 ### Translation
 
@@ -22,14 +22,14 @@ After doing that, you'll rename the file including your language at end, for exa
 then you 'll rename the file to `messages_jp.properties`.
 
 With the message file translated, now it's time to tell the plugin that your language exists, to do it, go to the file 
-`src/com/github/kennedyoliveira/pastebin/component/MessageBundle.java`, there you'll find a `static block` with a
+`src/com/github/kennedyoliveira/ultimatepastebin/i18n/MessageBundle.java`, there you'll find a `static block` with a
 `availableTranslations` map inside, there you'll put a new entry in the map where the key is the language that will show
 in the language options on plugins settings and the value of map entry is the `Locale` representing your language locale.
 
 See the example:
 
 ```java
-package com.github.kennedyoliveira.pastebin.i18n;
+package com.github.kennedyoliveira.ultimatepastebin.i18n;
 
 import com.github.kennedyoliveira.pastebin.settings.PasteBinConfigurationService;
 import com.intellij.CommonBundle;
