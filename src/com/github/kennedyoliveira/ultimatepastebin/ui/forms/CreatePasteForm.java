@@ -47,19 +47,19 @@ public class CreatePasteForm extends DialogWrapper {
     static {
         pasteVisibilityMap = new HashMap<>(6);
 
-        pasteVisibilityMap.put(1, PasteVisibility.PUBLIC);
-        pasteVisibilityMap.put(2, PasteVisibility.PRIVATE);
-        pasteVisibilityMap.put(3, PasteVisibility.UNLISTED);
+        pasteVisibilityMap.put(0, PasteVisibility.PUBLIC);
+        pasteVisibilityMap.put(1, PasteVisibility.PRIVATE);
+        pasteVisibilityMap.put(2, PasteVisibility.UNLISTED);
 
         pasteExpirationMap = new HashMap<>(14);
 
-        pasteExpirationMap.put(1, PasteExpiration.NEVER);
-        pasteExpirationMap.put(2, PasteExpiration.TEN_MINUTES);
-        pasteExpirationMap.put(3, PasteExpiration.ONE_HOUR);
-        pasteExpirationMap.put(4, PasteExpiration.ONE_DAY);
-        pasteExpirationMap.put(5, PasteExpiration.ONE_WEEK);
-        pasteExpirationMap.put(6, PasteExpiration.TWO_WEEKS);
-        pasteExpirationMap.put(7, PasteExpiration.ONE_MONTH);
+        pasteExpirationMap.put(0, PasteExpiration.NEVER);
+        pasteExpirationMap.put(1, PasteExpiration.TEN_MINUTES);
+        pasteExpirationMap.put(2, PasteExpiration.ONE_HOUR);
+        pasteExpirationMap.put(3, PasteExpiration.ONE_DAY);
+        pasteExpirationMap.put(4, PasteExpiration.ONE_WEEK);
+        pasteExpirationMap.put(5, PasteExpiration.TWO_WEEKS);
+        pasteExpirationMap.put(6, PasteExpiration.ONE_MONTH);
     }
 
     private JPanel principalPanel;
@@ -150,7 +150,7 @@ public class CreatePasteForm extends DialogWrapper {
      * @param project  Current project
      * @param fileType Type of the file for SyntaxHighLight
      */
-    public static void createAndShowForm(Paste paste, Project project, FileType fileType) {
+    public static void createAndShowForm(final Paste paste, Project project, FileType fileType) {
         AsyncResult<Boolean> booleanAsyncResult = new CreatePasteForm(project, paste, fileType).showAndGetOk();
 
         booleanAsyncResult.doWhenDone((Consumer<Boolean>) result -> {
@@ -202,10 +202,10 @@ public class CreatePasteForm extends DialogWrapper {
     protected void doOKAction() {
         // Updates the paste
         paste.setTitle(pasteTitle.getText());
-        // paste.setContent(pasteContent.getText());
+        paste.setContent(codeEditor.getText());
         paste.setHighLight((PasteHighLight) pasteHighlight.getSelectedItem());
         paste.setExpiration(pasteExpirationMap.get(pasteExpiration.getSelectedIndex()));
-        paste.setVisibility(pasteVisibilityMap.get(pasteHighlight.getSelectedIndex()));
+        paste.setVisibility(pasteVisibilityMap.get(pasteVisibility.getSelectedIndex()));
 
         super.doOKAction();
     }
