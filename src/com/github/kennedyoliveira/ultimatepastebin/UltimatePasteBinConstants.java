@@ -24,7 +24,7 @@ public class UltimatePasteBinConstants {
     /**
      * Link for reporting issues or suggestions
      */
-    public final static String ISSUE_URL = "https://github.com/kennedyoliveira/ultimate-pastebin-intellij-plugin";
+    public final static String ISSUE_URL = "https://github.com/kennedyoliveira/ultimate-pastebin-intellij-plugin/issues";
 
     /**
      * URL For the project site.
