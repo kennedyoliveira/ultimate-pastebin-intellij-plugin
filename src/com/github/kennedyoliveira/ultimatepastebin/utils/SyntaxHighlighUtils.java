@@ -32,6 +32,8 @@ public class SyntaxHighlighUtils {
         highLightByFileType.put("rhtml", PasteHighLight.Rails);
         highLightByFileType.put("rjs", PasteHighLight.Rails);
         highLightByFileType.put("rxml", PasteHighLight.Rails);
+        highLightByFileType.put("gsp", PasteHighLight.Groovy);
+        highLightByFileType.put("gradle", PasteHighLight.Groovy);
     }
 
     /**
