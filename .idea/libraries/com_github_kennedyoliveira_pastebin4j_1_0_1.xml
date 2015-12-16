@@ -1,0 +1,15 @@
+<component name="libraryTable">
+  <library name="com.github.kennedyoliveira:pastebin4j:1.0.1" type="repository">
+    <properties maven-id="com.github.kennedyoliveira:pastebin4j:1.0.1" />
+    <CLASSES>
+      <root url="jar://$PROJECT_DIR$/lib/pastebin4j-1.0.1.jar!/" />
+      <root url="jar://$PROJECT_DIR$/lib/annotations-15.0.jar!/" />
+    </CLASSES>
+    <JAVADOC>
+      <root url="jar://$PROJECT_DIR$/lib/pastebin4j-1.0.1-javadoc.jar!/" />
+    </JAVADOC>
+    <SOURCES>
+      <root url="jar://$PROJECT_DIR$/lib/pastebin4j-1.0.1-sources.jar!/" />
+    </SOURCES>
+  </library>
+</component>

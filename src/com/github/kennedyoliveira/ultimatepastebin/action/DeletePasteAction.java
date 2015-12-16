@@ -33,11 +33,11 @@ public class DeletePasteAction extends AbstractPasteSelectedAction {
             Paste paste = selectedPaste.get();
 
             int resp = Messages.showOkCancelDialog(e.getProject(),
-                                                   getMessage("ultimatepastebin.actions.deletepaste.confirmation.message", paste.getTitle()),
-                                                   getMessage("ultimatepastebin.actions.deletepaste.confirmation.title"),
-                                                   getMessage("ultimatepastebin.ok"),
-                                                   getMessage("ultimatepastebin.cancel"),
-                                                   Messages.getWarningIcon());
+                    getMessage("ultimatepastebin.actions.deletepaste.confirmation.message", paste.getTitle()),
+                    getMessage("ultimatepastebin.actions.deletepaste.confirmation.title"),
+                    getMessage("ultimatepastebin.ok"),
+                    getMessage("ultimatepastebin.cancel"),
+                    Messages.getWarningIcon());
 
             if (resp == Messages.OK) {
                 new Task.Backgroundable(e.getProject(), getMessage("ultimatepastebin.actions.deletepaste.task.title", paste.getTitle()), false) {
@@ -45,18 +45,20 @@ public class DeletePasteAction extends AbstractPasteSelectedAction {
                     public void run(@NotNull ProgressIndicator indicator) {
                         PasteBinService pasteBinService = ServiceManager.getService(PasteBinService.class);
 
-                        if (pasteBinService.getPasteBin().deletePaste(paste)) {
+                        try {
+                            pasteBinService.getPasteBin().deletePaste(paste);
+
                             Notifications.Bus.notify(new Notification("Paste deleted!",
-                                                                      "Ultimate PasteBin",
-                                                                      getMessage("ultimatepastebin.actions.deletepaste.ok.message", paste.getTitle()),
-                                                                      NotificationType.INFORMATION));
+                                    "Ultimate PasteBin",
+                                    getMessage("ultimatepastebin.actions.deletepaste.ok.message", paste.getTitle()),
+                                    NotificationType.INFORMATION));
 
                             ApplicationManager.getApplication().invokeLater(toolWindowService::fetchUserPastes);
-                        } else {
+                        } catch (Exception e1) {
                             Notifications.Bus.notify(new Notification("Error deleting a paste",
-                                                                      "Ultimate PasteBin",
-                                                                      getMessage("ultimatepastebin.actions.deletepaste.error.message", paste.getTitle()),
-                                                                      NotificationType.ERROR));
+                                    "Ultimate PasteBin",
+                                    getMessage("ultimatepastebin.actions.deletepaste.error.message", paste.getTitle(), e1.getMessage()),
+                                    NotificationType.ERROR));
                         }
                     }
                 }.queue();
