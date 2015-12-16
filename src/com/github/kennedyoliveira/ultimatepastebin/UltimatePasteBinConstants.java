@@ -29,7 +29,7 @@ public class UltimatePasteBinConstants {
     /**
      * URL For the project site.
      */
-    public final static String PROJECT_URL = "https://github.com/kennedyoliveira/ultimate-pastebin-intellij-plugin";
+    public final static String PROJECT_URL = "https://kennedyoliveira.github.io/ultimate-pastebin-intellij-plugin";
 
     /**
      * Default total of user pastes to fetch
