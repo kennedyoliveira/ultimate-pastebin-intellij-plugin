@@ -1,22 +1,3 @@
-<!-- START doctoc generated TOC please keep comment here to allow auto update -->
-<!-- DON'T EDIT THIS SECTION, INSTEAD RE-RUN doctoc TO UPDATE -->
-
-- [The best and sexy PasteBin plugin for IntelliJ!](#the-best-and-sexy-pastebin-plugin-for-intellij)
-- [Screenshots](#screenshots)
-  - [The ToolWindow](#the-toolwindow)
-  - [Context Menu on ToolWindow to make easy use it](#context-menu-on-toolwindow-to-make-easy-use-it)
-  - [Create Paste Window](#create-paste-window)
-  - [Showing note contents in the editor](#showing-note-contents-in-the-editor)
-  - [Settings](#settings)
-- [How to install](#how-to-install)
-- [How to setup my PasteBin Account](#how-to-setup-my-pastebin-account)
-- [How can i contribute?](#how-can-i-contribute)
-  - [Contributing with improviments](#contributing-with-improviments)
-  - [Contributing with translation](#contributing-with-translation)
-- [Donation! Make developers happy! xD](#donation-make-developers-happy-xd)
-
-<!-- END doctoc generated TOC please keep comment here to allow auto update -->
-
 # Ultimate PasteBin IntelliJ IDEA Plugin
 ### The best and sexy PasteBin plugin for IntelliJ!
 
@@ -35,6 +16,24 @@ With this plugin you get:
 - Delete your pastes
 - Extremely easy to configure
 - Easy to donate and make developers happy! :)
+
+<!-- START doctoc generated TOC please keep comment here to allow auto update -->
+<!-- DON'T EDIT THIS SECTION, INSTEAD RE-RUN doctoc TO UPDATE -->
+## Table of Contents 
+- [Screenshots](#screenshots)
+  - [The ToolWindow](#the-toolwindow)
+  - [Context Menu on ToolWindow to make easy use it](#context-menu-on-toolwindow-to-make-easy-use-it)
+  - [Create Paste Window](#create-paste-window)
+  - [Showing note contents in the editor](#showing-note-contents-in-the-editor)
+  - [Settings](#settings)
+- [How to install](#how-to-install)
+- [How to setup my PasteBin Account](#how-to-setup-my-pastebin-account)
+- [How can i contribute?](#how-can-i-contribute)
+  - [Contributing with improviments](#contributing-with-improviments)
+  - [Contributing with translation](#contributing-with-translation)
+- [Donation! Make developers happy! xD](#donation-make-developers-happy-xd)
+
+<!-- END doctoc generated TOC please keep comment here to allow auto update -->
 
 ## Screenshots
 
