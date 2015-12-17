@@ -53,7 +53,7 @@ With this plugin you get:
 ![](https://dl.dropboxusercontent.com/u/17155314/ultimate-paste-bin/settings.png)
 
 ## How to install
-In IntelliJ go to Preferences -> Plugins -> Install JetBrains Plugin -> Search for Ultimate PasteBin and install!
+In IntelliJ go to Preferences -> Plugins -> Browse repositories -> Search for Ultimate PasteBin and install!
 
 ## How to setup my PasteBin Account
 In the UltimatePasteBin toolwindow, click in the Settings icon, near the Hearth donation icon or In IntelliJ go to Preferences -> Search for Ultimate PasteBin -> Fill your username and password and click on `Get DevKey` and copy the DevKey in the PasteBin site to the DevKey field on UltimatePasteBin settings dialog, then click `Check Account Credentials`, if everything is ok you'll receive a success message and you are ready to use!
