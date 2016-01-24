@@ -27,7 +27,7 @@ import static com.github.kennedyoliveira.ultimatepastebin.i18n.MessageBundle.get
  */
 public class UltimatePasteBin implements ApplicationComponent {
 
-    private final static String VERSION = "1.0.0";
+    private final static String VERSION = "1.1.0";
     private final static Logger log = Logger.getInstance(UltimatePasteBin.class);
 
     @Override
@@ -100,9 +100,7 @@ public class UltimatePasteBin implements ApplicationComponent {
     }
 
     @Override
-    public void disposeComponent() {
-
-    }
+    public void disposeComponent() {    }
 
     @NotNull
     @Override

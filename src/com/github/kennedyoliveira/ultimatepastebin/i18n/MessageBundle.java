@@ -24,6 +24,7 @@ public class MessageBundle {
 
         availableTranslations.put("Português Brasileiro", new Locale.Builder().setLanguage("pt").setRegion("BR").build());
         availableTranslations.put("English", new Locale.Builder().setLanguage("en").build());
+        availableTranslations.put("French", new Locale.Builder().setLanguage("fr").build());
     }
 
     @Nullable
