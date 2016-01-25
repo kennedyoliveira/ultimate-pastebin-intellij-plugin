@@ -1,6 +1,5 @@
 <br>
-Version 1.2.0
+Version 1.2.1
 <ul>
-<li>Added support for <b>PRIVATE</b> pastes</li>
-<li>Copy content, show in editor or save in a file <b>PRIVATE</b> pastes</li>
+<li>Fixes for messages in the last update</li>
 </ul>

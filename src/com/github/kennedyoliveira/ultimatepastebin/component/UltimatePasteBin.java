@@ -6,10 +6,12 @@ import com.github.kennedyoliveira.ultimatepastebin.service.ToolWindowService;
 import com.github.kennedyoliveira.ultimatepastebin.settings.PasteBinConfigurableSettings;
 import com.github.kennedyoliveira.ultimatepastebin.settings.PasteBinConfigurationService;
 import com.github.kennedyoliveira.ultimatepastebin.settings.PasteBinSettings;
+import com.github.kennedyoliveira.ultimatepastebin.utils.StreamUtils;
 import com.intellij.notification.Notification;
 import com.intellij.notification.NotificationListener;
 import com.intellij.notification.NotificationType;
 import com.intellij.notification.Notifications;
+import com.intellij.openapi.application.RuntimeInterruptedException;
 import com.intellij.openapi.components.ApplicationComponent;
 import com.intellij.openapi.components.ServiceManager;
 import com.intellij.openapi.diagnostic.Logger;
@@ -34,7 +36,7 @@ import static java.util.stream.Collectors.joining;
  */
 public class UltimatePasteBin implements ApplicationComponent {
 
-    private final static String VERSION = "1.2.0";
+    private final static String VERSION = "1.2.1";
     private final static Logger log = Logger.getInstance(UltimatePasteBin.class);
 
     @Override
@@ -50,11 +52,11 @@ public class UltimatePasteBin implements ApplicationComponent {
         // from the actual, i show the change log
         if (configurationService.getVersion() != null && !configurationService.getVersion().equals(VERSION)) {
             try {
-                List<String> lastChange = Files.readAllLines(Paths.get(getClass().getResource("/last-change.txt").toURI()));
+                String changes = StreamUtils.readAllLines(getClass().getResourceAsStream("/last-change.txt"));
 
                 Notifications.Bus.notify(new Notification("ultimatepastebin.changelogmessage",
                         "Ultimate PasteBin Changes",
-                        getMessage("ultimatepastebin.changelogmessage", DONATION_URL, lastChange.stream().collect(joining())),
+                        getMessage("ultimatepastebin.changelogmessage", DONATION_URL, changes),
                         NotificationType.INFORMATION,
                         NotificationListener.URL_OPENING_LISTENER));
 
