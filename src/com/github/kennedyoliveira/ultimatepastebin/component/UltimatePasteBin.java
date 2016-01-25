@@ -16,18 +16,25 @@ import com.intellij.openapi.diagnostic.Logger;
 import com.intellij.openapi.options.ShowSettingsUtil;
 import org.jetbrains.annotations.NotNull;
 
+import java.io.IOException;
+import java.net.URISyntaxException;
+import java.nio.file.Files;
+import java.nio.file.Paths;
+import java.util.List;
 import java.util.Locale;
+import java.util.stream.Collectors;
 
 import static com.github.kennedyoliveira.ultimatepastebin.UltimatePasteBinConstants.DONATION_URL;
 import static com.github.kennedyoliveira.ultimatepastebin.UltimatePasteBinConstants.PROJECT_URL;
 import static com.github.kennedyoliveira.ultimatepastebin.i18n.MessageBundle.getMessage;
+import static java.util.stream.Collectors.joining;
 
 /**
  * Created by kennedy on 11/8/15.
  */
 public class UltimatePasteBin implements ApplicationComponent {
 
-    private final static String VERSION = "1.1.0";
+    private final static String VERSION = "1.2.0";
     private final static Logger log = Logger.getInstance(UltimatePasteBin.class);
 
     @Override
@@ -39,9 +46,28 @@ public class UltimatePasteBin implements ApplicationComponent {
             Locale.setDefault(MessageBundle.getLanguageLocale());
         }
 
-        // First time in this version
+        // if the configuration version is not null (mean there was a version before this one) and the version is different
+        // from the actual, i show the change log
+        if (configurationService.getVersion() != null && !configurationService.getVersion().equals(VERSION)) {
+            try {
+                List<String> lastChange = Files.readAllLines(Paths.get(getClass().getResource("/last-change.txt").toURI()));
+
+                Notifications.Bus.notify(new Notification("ultimatepastebin.changelogmessage",
+                        "Ultimate PasteBin Changes",
+                        getMessage("ultimatepastebin.changelogmessage", DONATION_URL, lastChange.stream().collect(joining())),
+                        NotificationType.INFORMATION,
+                        NotificationListener.URL_OPENING_LISTENER));
+
+                // Update the version
+                configurationService.setVersion(VERSION);
+            } catch (Exception e) {
+                log.error(e);
+            }
+        }
+
+        // First time
         // Show welcome message
-        if (!configurationService.isShowedWelcomeMessage() || (!configurationService.getVersion().equals(VERSION))) {
+        if (!configurationService.isShowedWelcomeMessage()) {
             // Gets the welcome message
             String message = getMessage("ultimatepastebin.welcomemessage", PROJECT_URL, DONATION_URL);
 
@@ -100,7 +126,8 @@ public class UltimatePasteBin implements ApplicationComponent {
     }
 
     @Override
-    public void disposeComponent() {    }
+    public void disposeComponent() {
+    }
 
     @NotNull
     @Override
