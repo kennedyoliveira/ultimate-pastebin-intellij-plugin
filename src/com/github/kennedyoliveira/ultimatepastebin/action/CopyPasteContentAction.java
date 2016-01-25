@@ -29,14 +29,6 @@ public class CopyPasteContentAction extends AbstractPasteSelectedAction {
     }
 
     private void downloadAndCopyToClipBoard(Paste paste) {
-        if (paste.getVisibility() == PasteVisibility.PRIVATE) {
-            Notifications.Bus.notify(new Notification("Can't fetch private paste contents",
-                                                      "Ultimate PasteBin",
-                                                      getMessage("ultimatepastebin.actions.copypastecontent.error.notification.message"),
-                                                      NotificationType.ERROR));
-            return;
-        }
-
         new Task.Backgroundable(null, getMessage("ultimatepastebin.paste.content.fetching"), false) {
             @Override
             public void run(@NotNull ProgressIndicator indicator) {

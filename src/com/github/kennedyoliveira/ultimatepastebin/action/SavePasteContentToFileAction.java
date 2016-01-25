@@ -37,14 +37,6 @@ public class SavePasteContentToFileAction extends AbstractPasteSelectedAction {
         if (selectedPaste.isPresent()) {
             Paste paste = selectedPaste.get();
 
-            if (paste.getVisibility() == PasteVisibility.PRIVATE) {
-                Notifications.Bus.notify(new Notification("Can't fetch private paste contents",
-                                                          "Ultimate PasteBin",
-                                                          getMessage("ultimatepastebin.actions.copypastecontent.error.notification.message"),
-                                                          NotificationType.ERROR));
-                return;
-            }
-
             FileSaverDescriptor fileSaverDescriptor = new FileSaverDescriptor(MessageBundle.getMessage("ultimatepastebin.actions.copypastecontentstofile.savefiledialog.title"),
                                                                               MessageBundle.getMessage("ultimatepastebin.actions.copypastecontentstofile.savefiledialog.description"),
                                                                               "txt", paste.getHighLight().toString());

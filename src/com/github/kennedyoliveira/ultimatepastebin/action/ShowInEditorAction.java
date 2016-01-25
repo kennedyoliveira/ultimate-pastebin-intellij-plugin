@@ -49,14 +49,6 @@ public class ShowInEditorAction extends AbstractPasteSelectedAction {
                     if (selectedPaste.isPresent()) {
                         Paste paste = selectedPaste.get();
 
-                        if (paste.getVisibility() == PasteVisibility.PRIVATE) {
-                            Notifications.Bus.notify(new Notification("Can't fetch private paste contents",
-                                    "Ultimate PasteBin",
-                                    getMessage("ultimatepastebin.actions.copypastecontent.error.notification.message"),
-                                    NotificationType.ERROR));
-                            return;
-                        }
-
                         PasteBinService service = ServiceManager.getService(PasteBinService.class);
                         String pasteContent = service.getPasteBin().getPasteContent(paste);
 
@@ -74,7 +66,7 @@ public class ShowInEditorAction extends AbstractPasteSelectedAction {
                             }
                         }
                     }
-                } catch (IOException e1) {
+                } catch (Exception e1) {
                     Notifications.Bus.notify(new Notification("Error opening paste in editor", "Ultimate PasteBin", getMessage("ultimatepastebin.actions.openpasteineditor.error.message", e1.getMessage()), NotificationType.ERROR));
                 }
             }
