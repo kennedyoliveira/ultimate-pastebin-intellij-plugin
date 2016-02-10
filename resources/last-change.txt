@@ -1,5 +1,6 @@
 <br>
-Version 1.2.1
+Version 1.2.1.0
 <ul>
-<li>Fixes for messages in the last update</li>
+<li>Releasing the plugin for all IntelliJ based platform, WebStorm, RubyMine, PyCharm... etc</li>
+<li>The plugin will have 2 versions, 1.2.x for IntelliJ and 1.2.x.y for the other platforms</li>
 </ul>
