@@ -1,5 +1,5 @@
 <br>
-Version 1.2.1
+Version 1.3.0
 <ul>
-<li>Fixes for messages in the last update</li>
+<li>Added norwegian translation, Kim Iversen (kimfy) contribution</li>
 </ul>
