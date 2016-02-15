@@ -1,6 +1,5 @@
 <br>
-Version 1.2.1.0
+Version 1.3.0.0
 <ul>
-<li>Releasing the plugin for all IntelliJ based platform, WebStorm, RubyMine, PyCharm... etc</li>
-<li>The plugin will have 2 versions, 1.2.x for IntelliJ and 1.2.x.y for the other platforms</li>
+<li>Added norwegian translation, Kim Iversen (kimfy) contribution</li>
 </ul>
