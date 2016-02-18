@@ -8,15 +8,20 @@ Currently the plugin only supports the languages below:
 
 - English (Native By Kennedy Oliveira - Owner and Plugin Developer)
 - Português Brasileiro (By Aninha Pessoni)
+- French (By Vinetos)
+- Norwegian (By Kim Iversen [kimfy])
 
 ### Translation
 
-To help with translation you have two options, doing all by yourself and sending a pull request to project, or only translating
-the messages file and sending to me, and i'll do the rest.
+To help with translation you have two options, doing all by yourself and sending a pull request to project, or only translating the messages file and sending to me, and i'll do the rest.
 
 #### Translation Process (Doing all by yourself)
 
 First, you need to copy the `resources/messages.properties` and translate to your desired language.
+
+Obs: If your language has some special characters, like `é á Å Ø Æ`, please instead of using this characters access this link [Unicode Table](http://unicode-table.com/en/), search for the character, for example the `Æ`, click on it and there will be a `Unicode number: U+00C6`, you will get the part after `U+` and will use in the message file like `\u00C6` and it'll work just fine. See the image below:
+
+![Example](https://www.evernote.com/l/AdL1RDAKNiFCxa2nQ988hVdnW1FO02q1l-AB/image.png)
 
 After doing that, you'll rename the file including your language at end, for example, suppose you are translating to `japanese`,
 then you 'll rename the file to `messages_jp.properties`.
