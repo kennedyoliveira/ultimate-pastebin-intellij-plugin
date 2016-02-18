@@ -1,7 +1,7 @@
 <idea-plugin version="2">
     <id>com.github.kennedyoliveira.ultimatepastebin</id>
     <name>Ultimate PasteBin</name>
-    <version>1.3.0.0</version>
+    <version>1.3.1.0</version>
     <vendor email="kennedy.oliveira@outlook.com" url="https://github.com/kennedyoliveira">Kennedy Oliveira</vendor>
 
     <description><![CDATA[
@@ -17,7 +17,12 @@
 
     <change-notes><![CDATA[
     <p>
-    <br>
+    Version 1.3.1.0
+    <ul>
+    <li>Fixing special characters errors from Norwegian translation</li>
+    </ul>
+
+    <p>
     Version 1.3.0.0
     <ul>
     <li>Added norwegian translation, Kim Iversen (kimfy) contribution</li>
