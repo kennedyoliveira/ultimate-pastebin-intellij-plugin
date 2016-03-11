@@ -6,7 +6,7 @@ import com.github.kennedyoliveira.pastebin4j.Paste;
 import com.github.kennedyoliveira.pastebin4j.PasteHighLight;
 import com.intellij.openapi.actionSystem.AnAction;
 import com.intellij.openapi.actionSystem.AnActionEvent;
-import com.intellij.openapi.actionSystem.DataKeys;
+import com.intellij.openapi.actionSystem.CommonDataKeys;
 import com.intellij.openapi.components.ServiceManager;
 import com.intellij.openapi.editor.Editor;
 import com.intellij.openapi.fileTypes.FileType;
@@ -26,7 +26,7 @@ public class CreatePasteAction extends AnAction {
     @Override
     public void actionPerformed(AnActionEvent e) {
         // Gets the selected text
-        Editor editor = e.getData(DataKeys.EDITOR);
+        Editor editor = e.getData(CommonDataKeys.EDITOR);
 
         final Paste paste = new Paste();
 
@@ -36,7 +36,7 @@ public class CreatePasteAction extends AnAction {
         }
 
         // Gets all the selected files
-        VirtualFile[] selectedFiles = e.getData(DataKeys.VIRTUAL_FILE_ARRAY);
+        VirtualFile[] selectedFiles = e.getData(CommonDataKeys.VIRTUAL_FILE_ARRAY);
 
         // Default plain text
         FileType fileType = PlainTextFileType.INSTANCE;
