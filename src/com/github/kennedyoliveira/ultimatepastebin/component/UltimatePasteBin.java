@@ -36,7 +36,7 @@ import static java.util.stream.Collectors.joining;
  */
 public class UltimatePasteBin implements ApplicationComponent {
 
-    private final static String VERSION = "1.3.3";
+    private final static String VERSION = "1.4.0";
     private final static Logger log = Logger.getInstance(UltimatePasteBin.class);
 
     @Override

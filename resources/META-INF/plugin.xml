@@ -1,7 +1,7 @@
 <idea-plugin version="2">
     <id>com.github.kennedyoliveira.ultimatepastebin</id>
     <name>Ultimate PasteBin</name>
-    <version>1.3.3</version>
+    <version>1.4.0</version>
     <vendor email="kennedy.oliveira@outlook.com" url="https://github.com/kennedyoliveira">Kennedy Oliveira</vendor>
 
     <description><![CDATA[
@@ -18,7 +18,7 @@
     <change-notes><![CDATA[
     <p>
     <br>
-    Version 1.3.3
+    Version 1.4.0
     <ul>
     <li>Added support for interacting with Pastebin using HTTPS [<a href="https://github.com/kennedyoliveira/ultimate-pastebin-intellij-plugin/issues/3">PR #3</a>, <a href="https://github.com/kennedyoliveira/pastebin4j/pull/1">PR #1</a>], Thank you jcassee!</li>
     </ul>
@@ -83,6 +83,13 @@
     -->
     <depends>com.intellij.modules.lang</depends>
 
+    <!--
+        This branch will depend on Java to make this plugin only usable by 133 intellij Branch, because it need
+        java 8 and intellij 133+ runs on java 8, but the other platforms (RubyMine, PyCharm and Cya) only run on java 8
+        in build 144.+
+    -->
+    <depends>com.intellij.modules.java</depends>
+
     <extensions defaultExtensionNs="com.intellij">
         <!-- Add your extensions here -->
         <toolWindow id="Ultimate PasteBin"
@@ -104,7 +111,8 @@
                 serviceImplementation="com.github.kennedyoliveira.ultimatepastebin.service.PasteBinServiceImpl"
         />
 
-        <applicationConfigurable instance="com.github.kennedyoliveira.ultimatepastebin.settings.PasteBinConfigurableSettings"/>
+        <applicationConfigurable
+                instance="com.github.kennedyoliveira.ultimatepastebin.settings.PasteBinConfigurableSettings"/>
         <applicationService
                 id="ultimatepastebin.configurationservice"
                 serviceInterface="com.github.kennedyoliveira.ultimatepastebin.settings.PasteBinConfigurationService"
@@ -151,10 +159,12 @@
 
         <action id="ultimatepastebin.OpenPasteInBrowser"
                 icon="/xml/browsers/chrome16.png"
-                class="com.github.kennedyoliveira.ultimatepastebin.action.OpenPasteInBrowserAction" text="Open Paste in Browser"
+                class="com.github.kennedyoliveira.ultimatepastebin.action.OpenPasteInBrowserAction"
+                text="Open Paste in Browser"
                 description="Open the selected paste in the default system browser."/>
 
-        <action class="com.github.kennedyoliveira.ultimatepastebin.action.CopyPasteUrlAction" id="ultimatepastebin.copyPasteUrl"
+        <action class="com.github.kennedyoliveira.ultimatepastebin.action.CopyPasteUrlAction"
+                id="ultimatepastebin.copyPasteUrl"
                 icon="/actions/copy_dark.png"
                 text="Copy Paste URL"
                 description="Copies the Paste's URL to the clipboard.">
@@ -175,7 +185,8 @@
                 description="Download and saves the contents of a paste in a file.">
         </action>
 
-        <action class="com.github.kennedyoliveira.ultimatepastebin.action.DeletePasteAction" id="ultimatepastebin.deletePaste"
+        <action class="com.github.kennedyoliveira.ultimatepastebin.action.DeletePasteAction"
+                id="ultimatepastebin.deletePaste"
                 text="Delete paste" description="Deletes a paste. This action can't be undone!"
                 icon="/actions/delete.png">
         </action>
@@ -186,7 +197,8 @@
                 icon="/icons/show_in_editor.png"
                 description="Show the contents of a Paste in the Editor"/>
 
-        <action id="ultimatepastebin.DonateAction" class="com.github.kennedyoliveira.ultimatepastebin.action.DonateAction"
+        <action id="ultimatepastebin.DonateAction"
+                class="com.github.kennedyoliveira.ultimatepastebin.action.DonateAction"
                 icon="/icons/donate.png"
                 text="Donate" description="Helps the developer donating! \o/">
         </action>

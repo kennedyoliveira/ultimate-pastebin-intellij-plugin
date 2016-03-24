@@ -1,5 +1,5 @@
 <br>
-Version 1.3.3
+Version 1.4.0
 <ul>
 <li>Added support for interacting with Pastebin using HTTPS [<a href="https://github.com/kennedyoliveira/ultimate-pastebin-intellij-plugin/issues/3">PR #3</a>, <a href="https://github.com/kennedyoliveira/pastebin4j/pull/1">PR #1</a>], Thank you jcassee!</li>
 </ul>
