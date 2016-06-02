@@ -1,12 +1,12 @@
 package com.github.kennedyoliveira.ultimatepastebin.ui.forms;
 
-import com.github.kennedyoliveira.ultimatepastebin.service.PasteBinService;
-import com.github.kennedyoliveira.ultimatepastebin.service.ToolWindowService;
-import com.github.kennedyoliveira.ultimatepastebin.utils.ClipboardUtils;
 import com.github.kennedyoliveira.pastebin4j.Paste;
 import com.github.kennedyoliveira.pastebin4j.PasteExpiration;
 import com.github.kennedyoliveira.pastebin4j.PasteHighLight;
 import com.github.kennedyoliveira.pastebin4j.PasteVisibility;
+import com.github.kennedyoliveira.ultimatepastebin.service.PasteBinService;
+import com.github.kennedyoliveira.ultimatepastebin.service.ToolWindowService;
+import com.github.kennedyoliveira.ultimatepastebin.utils.ClipboardUtils;
 import com.intellij.notification.Notification;
 import com.intellij.notification.NotificationListener;
 import com.intellij.notification.NotificationType;
@@ -24,7 +24,7 @@ import com.intellij.openapi.progress.Task;
 import com.intellij.openapi.project.Project;
 import com.intellij.openapi.ui.DialogWrapper;
 import com.intellij.openapi.util.AsyncResult;
-import com.intellij.ui.*;
+import com.intellij.ui.EditorTextField;
 import com.intellij.uiDesigner.core.GridConstraints;
 import com.intellij.util.Consumer;
 import org.jetbrains.annotations.NotNull;
@@ -32,7 +32,10 @@ import org.jetbrains.annotations.Nullable;
 
 import javax.swing.*;
 import java.awt.*;
-import java.util.*;
+import java.util.Arrays;
+import java.util.HashMap;
+import java.util.Map;
+import java.util.Objects;
 
 import static com.github.kennedyoliveira.ultimatepastebin.i18n.MessageBundle.getMessage;
 
@@ -108,20 +111,14 @@ public class CreatePasteForm extends DialogWrapper {
 
         init();
 
-        String content = paste.getContent() != null ? paste.getContent() : "";
+        String pasteContent = paste.getContent() != null ? paste.getContent() : "";
 
-        Document document;
+        final Document content = createDocument(pasteContent);
 
-        try {
-            document = EditorFactory.getInstance().createDocument(content);
-        } catch (Exception | AssertionError e) {
-            document = EditorFactory.getInstance().createDocument("");
-        }
-
-        codeEditor = new EditorTextField(document, project, fileType, false, false) {
+        codeEditor = new EditorTextField(content, project, fileType, false, false) {
             @Override
             protected EditorEx createEditor() {
-                EditorEx editor = super.createEditor();
+                EditorEx editor = (EditorEx) EditorFactory.getInstance().createEditor(content, project, fileType, false);
 
                 editor.setHorizontalScrollbarVisible(true);
                 editor.setVerticalScrollbarVisible(true);
@@ -140,6 +137,18 @@ public class CreatePasteForm extends DialogWrapper {
         pasteContentPanel.setMinimumSize(new Dimension(600, 325));
 
         pasteTitle.requestFocusInWindow();
+    }
+
+    @NotNull
+    private Document createDocument(String content) {
+        Document document;
+        try {
+            document = EditorFactory.getInstance().createDocument(content);
+        } catch (Exception | AssertionError e) {
+            document = EditorFactory.getInstance().createDocument("");
+        }
+
+        return document;
     }
 
 
@@ -207,6 +216,23 @@ public class CreatePasteForm extends DialogWrapper {
         paste.setExpiration(pasteExpirationMap.get(pasteExpiration.getSelectedIndex()));
         paste.setVisibility(pasteVisibilityMap.get(pasteVisibility.getSelectedIndex()));
 
+        releaseEditor();
+
         super.doOKAction();
+    }
+
+    @Override
+    public void doCancelAction() {
+        releaseEditor();
+
+        super.doCancelAction();
+    }
+
+    /**
+     * Releases the allocated editor.
+     */
+    private void releaseEditor() {
+        if (customizedEditor != null)
+            EditorFactory.getInstance().releaseEditor(customizedEditor);
     }
 }
