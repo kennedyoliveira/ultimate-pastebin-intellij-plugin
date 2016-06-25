@@ -1,8 +1,8 @@
 package com.github.kennedyoliveira.ultimatepastebin.action;
 
+import com.github.kennedyoliveira.pastebin4j.Paste;
 import com.github.kennedyoliveira.ultimatepastebin.service.ToolWindowService;
 import com.github.kennedyoliveira.ultimatepastebin.utils.ClipboardUtils;
-import com.github.kennedyoliveira.pastebin4j.Paste;
 import com.intellij.notification.Notification;
 import com.intellij.notification.NotificationListener;
 import com.intellij.notification.NotificationType;
@@ -15,36 +15,41 @@ import java.util.Optional;
 import static com.github.kennedyoliveira.ultimatepastebin.i18n.MessageBundle.getMessage;
 
 /**
- * <p>Copy the URL of a paste to clipboard</p>
+ * <p>Copy the URL of a paste to clipboard and show a notification to the user.</p>
  */
 public class CopyPasteUrlAction extends AbstractPasteSelectedAction {
 
-    @Override
-    public void actionPerformed(AnActionEvent e) {
-        ToolWindowService toolWindowService = ServiceManager.getService(ToolWindowService.class);
+  @Override
+  public void actionPerformed(AnActionEvent e) {
+    ToolWindowService toolWindowService = ServiceManager.getService(ToolWindowService.class);
 
-        Optional<Paste> selectedPaste = toolWindowService.getSelectedPaste();
+    Optional<Paste> selectedPaste = toolWindowService.getSelectedPaste();
 
-        selectedPaste.ifPresent(this::copyToClipboardAndNotify);
-    }
+    selectedPaste.ifPresent(this::copyToClipboardAndNotify);
+  }
 
-    private void copyToClipboardAndNotify(Paste paste) {
-        String url = paste.getUrl();
+  /**
+   * Copy the paste URL to the clipboard and show a notification to the user.
+   *
+   * @param paste Paste to copy the URL.
+   */
+  private void copyToClipboardAndNotify(Paste paste) {
+    String url = paste.getUrl();
 
-        ClipboardUtils.copyToClipboard(url);
+    ClipboardUtils.copyToClipboard(url);
 
-        Notifications.Bus.notify(new Notification("Paste URL Copied to Clipboard",
-                                "Ultimate PasteBin",
-                                getMessage("ultimatepastebin.actions.copypasteurl.ok.notification.message", url),
-                                NotificationType.INFORMATION,
-                                NotificationListener.URL_OPENING_LISTENER));
-    }
+    Notifications.Bus.notify(new Notification("Paste URL Copied to Clipboard",
+                                              "Ultimate PasteBin",
+                                              getMessage("ultimatepastebin.actions.copypasteurl.ok.notification.message", url),
+                                              NotificationType.INFORMATION,
+                                              NotificationListener.URL_OPENING_LISTENER));
+  }
 
-    @Override
-    public void update(AnActionEvent e) {
-        super.update(e);
+  @Override
+  public void update(AnActionEvent e) {
+    super.update(e);
 
-        e.getPresentation().setText(getMessage("ultimatepastebin.actions.copypasteurl.text"));
-        e.getPresentation().setDescription(getMessage("ultimatepastebin.actions.copypasteurl.description"));
-    }
+    e.getPresentation().setText(getMessage("ultimatepastebin.actions.copypasteurl.text"));
+    e.getPresentation().setDescription(getMessage("ultimatepastebin.actions.copypasteurl.description"));
+  }
 }

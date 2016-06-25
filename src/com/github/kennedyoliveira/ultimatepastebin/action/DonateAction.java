@@ -8,20 +8,20 @@ import com.intellij.openapi.actionSystem.AnActionEvent;
 import static com.github.kennedyoliveira.ultimatepastebin.i18n.MessageBundle.getMessage;
 
 /**
- * @author kennedy
+ * Action to open the URL for donation.
  */
 public class DonateAction extends AnAction {
 
-    @Override
-    public void actionPerformed(AnActionEvent e) {
-        BrowserUtil.browse(UltimatePasteBinConstants.DONATION_URL);
-    }
+  @Override
+  public void actionPerformed(AnActionEvent e) {
+    BrowserUtil.browse(UltimatePasteBinConstants.DONATION_URL);
+  }
 
-    @Override
-    public void update(AnActionEvent e) {
-        super.update(e);
+  @Override
+  public void update(AnActionEvent e) {
+    super.update(e);
 
-        e.getPresentation().setText(getMessage("ultimatepastebin.actions.donate.text"));
-        e.getPresentation().setDescription(getMessage("ultimatepastebin.actions.donate.description"));
-    }
+    e.getPresentation().setText(getMessage("ultimatepastebin.actions.donate.text"));
+    e.getPresentation().setDescription(getMessage("ultimatepastebin.actions.donate.description"));
+  }
 }

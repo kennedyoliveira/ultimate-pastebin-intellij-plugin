@@ -13,27 +13,27 @@ import static com.github.kennedyoliveira.ultimatepastebin.i18n.MessageBundle.get
  */
 public class UserNode implements IconVisitable {
 
-    private UserInformation userInformation;
+  private UserInformation userInformation;
 
-    public UserNode(UserInformation userInformation) {
-        this.userInformation = userInformation;
-    }
+  public UserNode(UserInformation userInformation) {
+    this.userInformation = userInformation;
+  }
 
-    public UserInformation getUserInformation() {
-        return userInformation;
-    }
+  public UserInformation getUserInformation() {
+    return userInformation;
+  }
 
-    public void setUserInformation(UserInformation userInformation) {
-        this.userInformation = userInformation;
-    }
+  public void setUserInformation(UserInformation userInformation) {
+    this.userInformation = userInformation;
+  }
 
-    @Override
-    public String toString() {
-        return userInformation != null ? getMessage("ultimatepastebin.user.loggedin", userInformation.getUsername()) : getMessage("ultimatepastebin.user.loggedout");
-    }
+  @Override
+  public String toString() {
+    return userInformation != null ? getMessage("ultimatepastebin.user.loggedin", userInformation.getUsername()) : getMessage("ultimatepastebin.user.loggedout");
+  }
 
-    @Override
-    public Icon visitNode(IconVisitor iconVisitor) {
-        return iconVisitor.visit(this);
-    }
+  @Override
+  public Icon visitNode(IconVisitor iconVisitor) {
+    return iconVisitor.visit(this);
+  }
 }

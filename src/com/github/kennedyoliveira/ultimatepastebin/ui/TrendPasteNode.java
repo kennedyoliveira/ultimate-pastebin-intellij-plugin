@@ -7,13 +7,13 @@ import javax.swing.*;
  */
 public class TrendPasteNode implements IconVisitable {
 
-    @Override
-    public String toString() {
-        return "Trend Paste";
-    }
+  @Override
+  public String toString() {
+    return "Trend Paste";
+  }
 
-    @Override
-    public Icon visitNode(IconVisitor iconVisitor) {
-        return iconVisitor.visit(this);
-    }
+  @Override
+  public Icon visitNode(IconVisitor iconVisitor) {
+    return iconVisitor.visit(this);
+  }
 }

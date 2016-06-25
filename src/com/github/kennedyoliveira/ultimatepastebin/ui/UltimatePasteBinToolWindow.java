@@ -21,32 +21,32 @@ import javax.swing.*;
  */
 public class UltimatePasteBinToolWindow implements ToolWindowFactory {
 
-    @Override
-    public void createToolWindowContent(@NotNull Project project, @NotNull ToolWindow toolWindow) {
-        toolWindow.setStripeTitle("Ultimate PasteBin");
-        toolWindow.setTitle("Ultimate PasteBin");
+  @Override
+  public void createToolWindowContent(@NotNull Project project, @NotNull ToolWindow toolWindow) {
+    toolWindow.setStripeTitle("Ultimate PasteBin");
+    toolWindow.setTitle("Ultimate PasteBin");
 
-        ContentManager contentManager = toolWindow.getContentManager();
+    ContentManager contentManager = toolWindow.getContentManager();
 
-        Content content = contentManager.getFactory().createContent(toolWindow.getComponent(), null, false);
+    Content content = contentManager.getFactory().createContent(toolWindow.getComponent(), null, false);
 
-        ToolWindowService service = ServiceManager.getService(ToolWindowService.class);
+    ToolWindowService service = ServiceManager.getService(ToolWindowService.class);
 
-        // Panel with toolbar
-        SimpleToolWindowPanel simpleToolWindowPanel = new SimpleToolWindowPanel(true);
+    // Panel with toolbar
+    SimpleToolWindowPanel simpleToolWindowPanel = new SimpleToolWindowPanel(true);
 
-        // Scrolable panel
-        JBScrollPane jbScrollPane = new JBScrollPane(service.getTree());
-        simpleToolWindowPanel.add(jbScrollPane);
-        simpleToolWindowPanel.setToolbar(createToolbar());
+    // Scrolable panel
+    JBScrollPane jbScrollPane = new JBScrollPane(service.getTree());
+    simpleToolWindowPanel.add(jbScrollPane);
+    simpleToolWindowPanel.setToolbar(createToolbar());
 
-        content.setComponent(simpleToolWindowPanel);
+    content.setComponent(simpleToolWindowPanel);
 
-        contentManager.addContent(content);
-    }
+    contentManager.addContent(content);
+  }
 
-    public JComponent createToolbar() {
-        ActionGroup actionGroup = (ActionGroup) ActionManager.getInstance().getAction("ultimatepastebin.ToolwindowToolbar");
-        return ActionManager.getInstance().createActionToolbar(ActionPlaces.EDITOR_TOOLBAR, actionGroup, true).getComponent();
-    }
+  public JComponent createToolbar() {
+    ActionGroup actionGroup = (ActionGroup) ActionManager.getInstance().getAction("ultimatepastebin.ToolwindowToolbar");
+    return ActionManager.getInstance().createActionToolbar(ActionPlaces.EDITOR_TOOLBAR, actionGroup, true).getComponent();
+  }
 }

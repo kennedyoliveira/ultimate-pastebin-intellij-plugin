@@ -11,49 +11,46 @@ import static java.util.function.Function.identity;
 import static java.util.stream.Collectors.toMap;
 
 /**
- * Created by kennedy on 11/9/15.
+ * Utility class to manage SintaxHighligh of files to the opitons in Pastebin.
  */
 public class SyntaxHighlighUtils {
 
-    private final static Map<String, PasteHighLight> highLightByFileType;
+  private final static Map<String, PasteHighLight> highLightByFileType;
 
-    static {
-        highLightByFileType = Arrays.stream(PasteHighLight.values()).collect(toMap(p -> p.toString().toLowerCase(), identity(), (p1, p2) -> p1));
+  static {
+    highLightByFileType = Arrays.stream(PasteHighLight.values()).collect(toMap(p -> p.toString().toLowerCase(), identity(), (p1, p2) -> p1));
 
-        // Some especial cases
-        highLightByFileType.put("html", PasteHighLight.HTML_5);
-        highLightByFileType.put("xhtml", PasteHighLight.HTML_5);
-        highLightByFileType.put("htm", PasteHighLight.HTML);
-        highLightByFileType.put("html", PasteHighLight.HTML_5);
-        highLightByFileType.put("yml", PasteHighLight.YAML);
-        highLightByFileType.put("rb", PasteHighLight.Ruby);
-        highLightByFileType.put("py", PasteHighLight.Python);
-        highLightByFileType.put("erb", PasteHighLight.Rails);
-        highLightByFileType.put("rhtml", PasteHighLight.Rails);
-        highLightByFileType.put("rjs", PasteHighLight.Rails);
-        highLightByFileType.put("rxml", PasteHighLight.Rails);
-        highLightByFileType.put("gsp", PasteHighLight.Groovy);
-        highLightByFileType.put("gradle", PasteHighLight.Groovy);
+    // Some especial cases
+    highLightByFileType.put("html", PasteHighLight.HTML_5);
+    highLightByFileType.put("xhtml", PasteHighLight.HTML_5);
+    highLightByFileType.put("htm", PasteHighLight.HTML);
+    highLightByFileType.put("html", PasteHighLight.HTML_5);
+    highLightByFileType.put("yml", PasteHighLight.YAML);
+    highLightByFileType.put("rb", PasteHighLight.Ruby);
+    highLightByFileType.put("py", PasteHighLight.Python);
+    highLightByFileType.put("erb", PasteHighLight.Rails);
+    highLightByFileType.put("rhtml", PasteHighLight.Rails);
+    highLightByFileType.put("rjs", PasteHighLight.Rails);
+    highLightByFileType.put("rxml", PasteHighLight.Rails);
+    highLightByFileType.put("gsp", PasteHighLight.Groovy);
+    highLightByFileType.put("gradle", PasteHighLight.Groovy);
+  }
+
+  private SyntaxHighlighUtils() {
+  }
+
+  /**
+   * Gets a {@link PasteHighLight} based on a file extension without the dot.
+   *
+   * @param fileExtension File extension, ex: java
+   * @return An Optional with the {@link PasteHighLight}
+   */
+  @Nullable
+  public static Optional<PasteHighLight> getHighlighByFileExtension(@Nullable String fileExtension) {
+    if (fileExtension == null || fileExtension.isEmpty()) {
+      return Optional.empty();
     }
 
-    /**
-     * @deprecated Utility Class
-     */
-    private SyntaxHighlighUtils() {
-    }
-
-    /**
-     * Gets a {@link PasteHighLight} based on a file extension without the dot.
-     *
-     * @param fileExtension File extension, ex: java
-     * @return An Optional with the {@link PasteHighLight}
-     */
-    @Nullable
-    public static Optional<PasteHighLight> getHighlighByFileExtension(@Nullable String fileExtension) {
-        if (fileExtension == null || fileExtension.isEmpty()) {
-            return Optional.empty();
-        }
-
-        return Optional.ofNullable(highLightByFileType.get(fileExtension.toLowerCase()));
-    }
+    return Optional.ofNullable(highLightByFileType.get(fileExtension.toLowerCase()));
+  }
 }

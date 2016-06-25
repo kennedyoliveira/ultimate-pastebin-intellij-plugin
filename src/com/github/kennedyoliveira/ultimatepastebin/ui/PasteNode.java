@@ -14,23 +14,23 @@ import static com.github.kennedyoliveira.ultimatepastebin.i18n.MessageBundle.get
  */
 public class PasteNode implements IconVisitable {
 
-    private Paste paste;
+  private Paste paste;
 
-    public PasteNode(Paste paste) {
-        this.paste = paste;
-    }
+  public PasteNode(Paste paste) {
+    this.paste = paste;
+  }
 
-    public Paste getPaste() {
-        return paste;
-    }
+  public Paste getPaste() {
+    return paste;
+  }
 
-    @Override
-    public String toString() {
-        return paste.getTitle() == null || paste.getTitle().isEmpty() ? getMessage("ultimatepastebin.paste.untitled") : paste.getTitle();
-    }
+  @Override
+  public String toString() {
+    return paste.getTitle() == null || paste.getTitle().isEmpty() ? getMessage("ultimatepastebin.paste.untitled") : paste.getTitle();
+  }
 
-    @Override
-    public Icon visitNode(IconVisitor iconVisitor) {
-        return iconVisitor.visit(this);
-    }
+  @Override
+  public Icon visitNode(IconVisitor iconVisitor) {
+    return iconVisitor.visit(this);
+  }
 }

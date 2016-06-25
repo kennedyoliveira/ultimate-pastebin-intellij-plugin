@@ -8,20 +8,20 @@ import com.intellij.openapi.options.ShowSettingsUtil;
 import static com.github.kennedyoliveira.ultimatepastebin.i18n.MessageBundle.getMessage;
 
 /**
- * Created by kennedy on 11/8/15.
+ * Action that show the setting window of the plugin.
  */
 public class ShowSettingsAction extends AnAction {
 
-    @Override
-    public void actionPerformed(AnActionEvent e) {
-        ShowSettingsUtil.getInstance().showSettingsDialog(e.getProject(), PasteBinConfigurableSettings.class);
-    }
+  @Override
+  public void actionPerformed(AnActionEvent e) {
+    ShowSettingsUtil.getInstance().showSettingsDialog(e.getProject(), PasteBinConfigurableSettings.class);
+  }
 
-    @Override
-    public void update(AnActionEvent e) {
-        super.update(e);
+  @Override
+  public void update(AnActionEvent e) {
+    super.update(e);
 
-        e.getPresentation().setText(getMessage("ultimatepastebin.actions.showsettings.text"));
-        e.getPresentation().setDescription(getMessage("ultimatepastebin.actions.showsettings.description"));
-    }
+    e.getPresentation().setText(getMessage("ultimatepastebin.actions.showsettings.text"));
+    e.getPresentation().setDescription(getMessage("ultimatepastebin.actions.showsettings.description"));
+  }
 }

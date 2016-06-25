@@ -1,77 +1,70 @@
 package com.github.kennedyoliveira.ultimatepastebin.action;
 
-import com.github.kennedyoliveira.ultimatepastebin.settings.PasteBinConfigurationService;
-import com.github.kennedyoliveira.ultimatepastebin.ui.forms.CreatePasteForm;
 import com.github.kennedyoliveira.pastebin4j.Paste;
 import com.github.kennedyoliveira.pastebin4j.PasteHighLight;
+import com.github.kennedyoliveira.ultimatepastebin.settings.PasteBinConfigurationService;
+import com.github.kennedyoliveira.ultimatepastebin.ui.forms.CreatePasteForm;
+import com.github.kennedyoliveira.ultimatepastebin.utils.UltimatePasteBinUtils;
 import com.intellij.openapi.actionSystem.AnAction;
 import com.intellij.openapi.actionSystem.AnActionEvent;
 import com.intellij.openapi.actionSystem.DataKeys;
 import com.intellij.openapi.components.ServiceManager;
+import com.intellij.openapi.diagnostic.Logger;
 import com.intellij.openapi.editor.Editor;
 import com.intellij.openapi.fileTypes.FileType;
 import com.intellij.openapi.fileTypes.PlainTextFileType;
 import com.intellij.openapi.vfs.VirtualFile;
 
-import java.io.IOException;
-
 import static com.github.kennedyoliveira.ultimatepastebin.i18n.MessageBundle.getMessage;
-import static com.github.kennedyoliveira.ultimatepastebin.utils.SyntaxHighlighUtils.getHighlighByFileExtension;
 
 /**
- * Created by kennedy on 11/6/15.
+ * Action to create a new paste.
  */
 public class CreatePasteAction extends AnAction {
 
-    @Override
-    public void actionPerformed(AnActionEvent e) {
-        // Gets the selected text
-        Editor editor = e.getData(DataKeys.EDITOR);
+  private final static Logger log = UltimatePasteBinUtils.LOG;
 
-        final Paste paste = new Paste();
+  @Override
+  public void actionPerformed(AnActionEvent e) {
+    // Gets the selected text
+    Editor editor = e.getData(DataKeys.EDITOR);
 
-        // If there are something selected
-        if (editor != null && editor.getSelectionModel().getSelectedText() != null) {
-            paste.setContent(editor.getSelectionModel().getSelectedText());
-        }
+    // Default plain text
+    FileType fileType = PlainTextFileType.INSTANCE;
 
-        // Gets all the selected files
-        VirtualFile[] selectedFiles = e.getData(DataKeys.VIRTUAL_FILE_ARRAY);
+    final Paste paste = new Paste();
 
-        // Default plain text
-        FileType fileType = PlainTextFileType.INSTANCE;
+    // If there are something selected
+    if (editor != null && editor.getSelectionModel().getSelectedText() != null) {
+      paste.setContent(editor.getSelectionModel().getSelectedText());
+    } else {
+      // Gets all the selected files
+      VirtualFile[] selectedFiles = e.getData(DataKeys.VIRTUAL_FILE_ARRAY);
 
-        // When there is multiple files selected, i do nothing
-        if (selectedFiles != null && selectedFiles.length == 1 && !selectedFiles[0].isDirectory()) {
-            String extension = selectedFiles[0].getExtension();
-            fileType = selectedFiles[0].getFileType();
-            String defaultFileExtension = fileType.getDefaultExtension();
+      // When there is multiple files selected, i do nothing
+      if (selectedFiles != null && selectedFiles.length == 1 && !selectedFiles[0].isDirectory()) {
+        fileType = selectedFiles[0].getFileType();
 
-            // Try to get by the default file extension, if not found, try to get by the file extension, if not found too,
-            // then go with text
-            paste.setHighLight(getHighlighByFileExtension(defaultFileExtension).orElse(getHighlighByFileExtension(extension).orElse(PasteHighLight.TEXT)));
+        // Try to get the Highlight based on the file, if not found use the Text
+        paste.setHighLight(UltimatePasteBinUtils.getHighlighFromVirtualFile(selectedFiles[0]).orElse(PasteHighLight.TEXT));
 
-            // If there's no content selected, then i set the content of the selected file
-            if (paste.getContent() == null) {
-                try {
-                    paste.setContent(new String(selectedFiles[0].contentsToByteArray(), selectedFiles[0].getCharset()));
-                } catch (IOException ignored) {
-                }
-            }
-        }
-
-        CreatePasteForm.createAndShowForm(paste, e.getProject(), fileType);
+        // Set the content of the selected file to paste
+        UltimatePasteBinUtils.getFileContent(selectedFiles[0]).ifPresent(paste::setContent);
+      }
     }
 
-    @Override
-    public void update(AnActionEvent e) {
-        super.update(e);
+    CreatePasteForm.createAndShowForm(paste, e.getProject(), fileType);
+  }
 
-        PasteBinConfigurationService configurationService = ServiceManager.getService(PasteBinConfigurationService.class);
+  @Override
+  public void update(AnActionEvent e) {
+    super.update(e);
 
-        e.getPresentation().setEnabled(configurationService.isValidCredentials());
+    PasteBinConfigurationService configurationService = ServiceManager.getService(PasteBinConfigurationService.class);
 
-        e.getPresentation().setText(getMessage("ultimatepastebin.actions.createpaste.text"));
-        e.getPresentation().setDescription(getMessage("ultimatepastebin.actions.createpaste.description"));
-    }
+    e.getPresentation().setEnabled(configurationService.isValidCredentials());
+
+    e.getPresentation().setText(getMessage("ultimatepastebin.actions.createpaste.text"));
+    e.getPresentation().setDescription(getMessage("ultimatepastebin.actions.createpaste.description"));
+  }
 }

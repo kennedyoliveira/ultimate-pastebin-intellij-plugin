@@ -8,22 +8,22 @@ import com.intellij.openapi.components.ServiceManager;
 import static com.github.kennedyoliveira.ultimatepastebin.i18n.MessageBundle.getMessage;
 
 /**
- * Created by kennedy on 11/6/15.
+ * Action the fetch all the pastes and updates the UI
  */
 public class RefreshPastesAction extends AnAction {
 
-    @Override
-    public void actionPerformed(AnActionEvent e) {
-        ToolWindowService service = ServiceManager.getService(ToolWindowService.class);
+  @Override
+  public void actionPerformed(AnActionEvent e) {
+    ToolWindowService service = ServiceManager.getService(ToolWindowService.class);
 
-        service.fetchPastes();
-    }
+    service.fetchPastes();
+  }
 
-    @Override
-    public void update(AnActionEvent e) {
-        super.update(e);
+  @Override
+  public void update(AnActionEvent e) {
+    super.update(e);
 
-        e.getPresentation().setText(getMessage("ultimatepastebin.actions.refreshpastes.text"));
-        e.getPresentation().setDescription(getMessage("ultimatepastebin.actions.refreshpastes.description"));
-    }
+    e.getPresentation().setText(getMessage("ultimatepastebin.actions.refreshpastes.text"));
+    e.getPresentation().setDescription(getMessage("ultimatepastebin.actions.refreshpastes.description"));
+  }
 }

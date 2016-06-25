@@ -44,195 +44,207 @@ import static com.github.kennedyoliveira.ultimatepastebin.i18n.MessageBundle.get
  */
 public class CreatePasteForm extends DialogWrapper {
 
-    private final static Map<Integer, PasteVisibility> pasteVisibilityMap;
-    private final static Map<Integer, PasteExpiration> pasteExpirationMap;
+  private final static Map<Integer, PasteVisibility> pasteVisibilityMap;
+  private final static Map<Integer, PasteExpiration> pasteExpirationMap;
 
-    static {
-        pasteVisibilityMap = new HashMap<>(6);
+  static {
+    pasteVisibilityMap = new HashMap<>(6);
 
-        pasteVisibilityMap.put(0, PasteVisibility.PUBLIC);
-        pasteVisibilityMap.put(1, PasteVisibility.PRIVATE);
-        pasteVisibilityMap.put(2, PasteVisibility.UNLISTED);
+    pasteVisibilityMap.put(0, PasteVisibility.PUBLIC);
+    pasteVisibilityMap.put(1, PasteVisibility.PRIVATE);
+    pasteVisibilityMap.put(2, PasteVisibility.UNLISTED);
 
-        pasteExpirationMap = new HashMap<>(14);
+    pasteExpirationMap = new HashMap<>(14);
 
-        pasteExpirationMap.put(0, PasteExpiration.NEVER);
-        pasteExpirationMap.put(1, PasteExpiration.TEN_MINUTES);
-        pasteExpirationMap.put(2, PasteExpiration.ONE_HOUR);
-        pasteExpirationMap.put(3, PasteExpiration.ONE_DAY);
-        pasteExpirationMap.put(4, PasteExpiration.ONE_WEEK);
-        pasteExpirationMap.put(5, PasteExpiration.TWO_WEEKS);
-        pasteExpirationMap.put(6, PasteExpiration.ONE_MONTH);
+    pasteExpirationMap.put(0, PasteExpiration.NEVER);
+    pasteExpirationMap.put(1, PasteExpiration.TEN_MINUTES);
+    pasteExpirationMap.put(2, PasteExpiration.ONE_HOUR);
+    pasteExpirationMap.put(3, PasteExpiration.ONE_DAY);
+    pasteExpirationMap.put(4, PasteExpiration.ONE_WEEK);
+    pasteExpirationMap.put(5, PasteExpiration.TWO_WEEKS);
+    pasteExpirationMap.put(6, PasteExpiration.ONE_MONTH);
+  }
+
+  private JPanel principalPanel;
+  private JTextField pasteTitle;
+  private JComboBox pasteExpiration;
+  private JComboBox pasteVisibility;
+  private JComboBox pasteHighlight;
+  private JPanel pasteContentPanel;
+  private EditorTextField codeEditor;
+  private Editor customizedEditor;
+  /**
+   * Paste that will be created.
+   */
+  private Paste paste;
+
+  public CreatePasteForm(@Nullable Project project, Paste paste, FileType fileType) {
+    super(project);
+
+    Objects.requireNonNull(paste);
+
+    this.paste = paste;
+
+    setTitle(getMessage("ultimatepastebin.createpaste.form.title"));
+    setAutoAdjustable(true);
+    setModal(false);
+
+    Arrays.stream(PasteHighLight.values()).forEach(pasteHighlight::addItem);
+
+    if (paste.getHighLight() != null) {
+      setSelectedPasteHighlight(paste.getHighLight());
+    } else {
+      setSelectedPasteHighlight(PasteHighLight.TEXT);
     }
 
-    private JPanel principalPanel;
-    private JTextField pasteTitle;
-    private JComboBox pasteExpiration;
-    private JComboBox pasteVisibility;
-    private JComboBox pasteHighlight;
-    private JPanel pasteContentPanel;
-    private EditorTextField codeEditor;
-    private Editor customizedEditor;
-    /**
-     * Paste that will be created.
-     */
-    private Paste paste;
+    pasteExpiration.addItem(getMessage("ultimatepastebin.paste.expiration.never"));
+    pasteExpiration.addItem(getMessage("ultimatepastebin.paste.expiration.tenminutes"));
+    pasteExpiration.addItem(getMessage("ultimatepastebin.paste.expiration.onehour"));
+    pasteExpiration.addItem(getMessage("ultimatepastebin.paste.expiration.oneday"));
+    pasteExpiration.addItem(getMessage("ultimatepastebin.paste.expiration.oneweek"));
+    pasteExpiration.addItem(getMessage("ultimatepastebin.paste.expiration.twoweeks"));
+    pasteExpiration.addItem(getMessage("ultimatepastebin.paste.expiration.onemonth"));
 
-    public CreatePasteForm(@Nullable Project project, Paste paste, FileType fileType) {
-        super(project);
+    pasteVisibility.addItem(getMessage("ultimatepastebin.paste.visibility.public"));
+    pasteVisibility.addItem(getMessage("ultimatepastebin.paste.visibility.private"));
+    pasteVisibility.addItem(getMessage("ultimatepastebin.paste.visibility.unlisted"));
 
-        Objects.requireNonNull(paste);
+    init();
 
-        this.paste = paste;
+    String pasteContent = paste.getContent() != null ? paste.getContent() : "";
 
-        setTitle(getMessage("ultimatepastebin.createpaste.form.title"));
-        setAutoAdjustable(true);
-        setModal(false);
+    final Document content = createDocument(pasteContent);
 
-        Arrays.stream(PasteHighLight.values()).forEach(pasteHighlight::addItem);
+    codeEditor = new EditorTextField(content, project, fileType, false, false) {
+      @Override
+      protected EditorEx createEditor() {
+        EditorEx editor = (EditorEx) EditorFactory.getInstance().createEditor(content, project, fileType, false);
 
-        if (paste.getHighLight() != null) {
-            setSelectedPasteHighlight(paste.getHighLight());
-        } else {
-            setSelectedPasteHighlight(PasteHighLight.TEXT);
-        }
+        editor.setHorizontalScrollbarVisible(true);
+        editor.setVerticalScrollbarVisible(true);
 
-        pasteExpiration.addItem(getMessage("ultimatepastebin.paste.expiration.never"));
-        pasteExpiration.addItem(getMessage("ultimatepastebin.paste.expiration.tenminutes"));
-        pasteExpiration.addItem(getMessage("ultimatepastebin.paste.expiration.onehour"));
-        pasteExpiration.addItem(getMessage("ultimatepastebin.paste.expiration.oneday"));
-        pasteExpiration.addItem(getMessage("ultimatepastebin.paste.expiration.oneweek"));
-        pasteExpiration.addItem(getMessage("ultimatepastebin.paste.expiration.twoweeks"));
-        pasteExpiration.addItem(getMessage("ultimatepastebin.paste.expiration.onemonth"));
+        EditorSettings settings = editor.getSettings();
+        settings.setLineNumbersShown(true);
 
-        pasteVisibility.addItem(getMessage("ultimatepastebin.paste.visibility.public"));
-        pasteVisibility.addItem(getMessage("ultimatepastebin.paste.visibility.private"));
-        pasteVisibility.addItem(getMessage("ultimatepastebin.paste.visibility.unlisted"));
+        customizedEditor = editor;
 
-        init();
+        return editor;
+      }
+    };
 
-        String pasteContent = paste.getContent() != null ? paste.getContent() : "";
+    // Copied from the generated code
+    pasteContentPanel.add(codeEditor,
+                          new GridConstraints(0,
+                                              0,
+                                              1,
+                                              1,
+                                              GridConstraints.ANCHOR_CENTER,
+                                              GridConstraints.FILL_BOTH,
+                                              GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW,
+                                              GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW,
+                                              null,
+                                              new Dimension(600, 325),
+                                              null,
+                                              0,
+                                              false));
+    pasteContentPanel.setMinimumSize(new Dimension(600, 325));
 
-        final Document content = createDocument(pasteContent);
+    pasteTitle.requestFocusInWindow();
+  }
 
-        codeEditor = new EditorTextField(content, project, fileType, false, false) {
-            @Override
-            protected EditorEx createEditor() {
-                EditorEx editor = (EditorEx) EditorFactory.getInstance().createEditor(content, project, fileType, false);
+  /**
+   * Show the create paste forms populated with the Paste info
+   *
+   * @param paste    Paste to be saved
+   * @param project  Current project
+   * @param fileType Type of the file for SyntaxHighLight
+   */
+  public static void createAndShowForm(final Paste paste, Project project, FileType fileType) {
+    AsyncResult<Boolean> booleanAsyncResult = new CreatePasteForm(project, paste, fileType).showAndGetOk();
 
-                editor.setHorizontalScrollbarVisible(true);
-                editor.setVerticalScrollbarVisible(true);
+    booleanAsyncResult.doWhenDone((Consumer<Boolean>) result -> {
+      if (result) {
+        new Task.Backgroundable(project, getMessage("ultimatepastebin.actions.createpaste.task.title"), false) {
+          @Override
+          public void run(@NotNull ProgressIndicator indicator) {
+            try {
+              PasteBinService service = ServiceManager.getService(PasteBinService.class);
+              String url = service.getPasteBin().createPaste(paste);
 
-                EditorSettings settings = editor.getSettings();
-                settings.setLineNumbersShown(true);
+              String message = getMessage("ultimatepastebin.actions.createpaste.ok.notification.message", url);
 
-                customizedEditor = editor;
+              ClipboardUtils.copyToClipboard(url);
 
-                return editor;
+              Notifications.Bus.notify(new Notification("Paste created",
+                                                        "Ultimate PasteBin",
+                                                        message,
+                                                        NotificationType.INFORMATION,
+                                                        NotificationListener.URL_OPENING_LISTENER), project);
+
+              // Updates the pastes...
+              ApplicationManager.getApplication().invokeLater(() -> {
+                ServiceManager.getService(ToolWindowService.class).fetchUserPastes();
+              });
+            } catch (Exception e1) {
+              Notifications.Bus.notify(new Notification("Error creating a paste",
+                                                        "Ultimate PasteBin",
+                                                        getMessage("ultimatepastebin.actions.createpaste.error.notification.message", e1.getMessage()),
+                                                        NotificationType.ERROR));
             }
-        };
+          }
+        }.queue();
+      }
+    });
+  }
 
-        // Copied from the generated code
-        pasteContentPanel.add(codeEditor, new GridConstraints(0, 0, 1, 1, GridConstraints.ANCHOR_CENTER, GridConstraints.FILL_BOTH, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW, null, new Dimension(600, 325), null, 0, false));
-        pasteContentPanel.setMinimumSize(new Dimension(600, 325));
-
-        pasteTitle.requestFocusInWindow();
+  @NotNull
+  private Document createDocument(String content) {
+    Document document;
+    try {
+      document = EditorFactory.getInstance().createDocument(content);
+    } catch (Exception | AssertionError e) {
+      document = EditorFactory.getInstance().createDocument("");
     }
 
-    @NotNull
-    private Document createDocument(String content) {
-        Document document;
-        try {
-            document = EditorFactory.getInstance().createDocument(content);
-        } catch (Exception | AssertionError e) {
-            document = EditorFactory.getInstance().createDocument("");
-        }
+    return document;
+  }
 
-        return document;
-    }
+  @Nullable
+  @Override
+  protected JComponent createCenterPanel() {
+    return principalPanel;
+  }
 
+  public void setSelectedPasteHighlight(PasteHighLight pasteHighlight) {
+    this.pasteHighlight.setSelectedItem(pasteHighlight);
+  }
 
-    /**
-     * Show the create paste forms populated with the Paste info
-     *
-     * @param paste    Paste to be saved
-     * @param project  Current project
-     * @param fileType Type of the file for SyntaxHighLight
-     */
-    public static void createAndShowForm(final Paste paste, Project project, FileType fileType) {
-        AsyncResult<Boolean> booleanAsyncResult = new CreatePasteForm(project, paste, fileType).showAndGetOk();
+  @Override
+  protected void doOKAction() {
+    // Updates the paste
+    paste.setTitle(pasteTitle.getText());
+    paste.setContent(codeEditor.getText());
+    paste.setHighLight((PasteHighLight) pasteHighlight.getSelectedItem());
+    paste.setExpiration(pasteExpirationMap.get(pasteExpiration.getSelectedIndex()));
+    paste.setVisibility(pasteVisibilityMap.get(pasteVisibility.getSelectedIndex()));
 
-        booleanAsyncResult.doWhenDone((Consumer<Boolean>) result -> {
-            if (result) {
-                new Task.Backgroundable(project, getMessage("ultimatepastebin.actions.createpaste.task.title"), false) {
-                    @Override
-                    public void run(@NotNull ProgressIndicator indicator) {
-                        try {
-                            PasteBinService service = ServiceManager.getService(PasteBinService.class);
-                            String url = service.getPasteBin().createPaste(paste);
+    releaseEditor();
 
-                            String message = getMessage("ultimatepastebin.actions.createpaste.ok.notification.message", url);
+    super.doOKAction();
+  }
 
-                            ClipboardUtils.copyToClipboard(url);
+  @Override
+  public void doCancelAction() {
+    releaseEditor();
 
-                            Notifications.Bus.notify(new Notification("Paste created",
-                                    "Ultimate PasteBin",
-                                    message,
-                                    NotificationType.INFORMATION,
-                                    NotificationListener.URL_OPENING_LISTENER), project);
+    super.doCancelAction();
+  }
 
-                            // Updates the pastes...
-                            ApplicationManager.getApplication().invokeLater(() -> {
-                                ServiceManager.getService(ToolWindowService.class).fetchUserPastes();
-                            });
-                        } catch (Exception e1) {
-                            Notifications.Bus.notify(new Notification("Error creating a paste",
-                                    "Ultimate PasteBin",
-                                    getMessage("ultimatepastebin.actions.createpaste.error.notification.message", e1.getMessage()),
-                                    NotificationType.ERROR));
-                        }
-                    }
-                }.queue();
-            }
-        });
-    }
-
-    @Nullable
-    @Override
-    protected JComponent createCenterPanel() {
-        return principalPanel;
-    }
-
-    public void setSelectedPasteHighlight(PasteHighLight pasteHighlight) {
-        this.pasteHighlight.setSelectedItem(pasteHighlight);
-    }
-
-    @Override
-    protected void doOKAction() {
-        // Updates the paste
-        paste.setTitle(pasteTitle.getText());
-        paste.setContent(codeEditor.getText());
-        paste.setHighLight((PasteHighLight) pasteHighlight.getSelectedItem());
-        paste.setExpiration(pasteExpirationMap.get(pasteExpiration.getSelectedIndex()));
-        paste.setVisibility(pasteVisibilityMap.get(pasteVisibility.getSelectedIndex()));
-
-        releaseEditor();
-
-        super.doOKAction();
-    }
-
-    @Override
-    public void doCancelAction() {
-        releaseEditor();
-
-        super.doCancelAction();
-    }
-
-    /**
-     * Releases the allocated editor.
-     */
-    private void releaseEditor() {
-        if (customizedEditor != null)
-            EditorFactory.getInstance().releaseEditor(customizedEditor);
-    }
+  /**
+   * Releases the allocated editor.
+   */
+  private void releaseEditor() {
+    if (customizedEditor != null)
+      EditorFactory.getInstance().releaseEditor(customizedEditor);
+  }
 }

@@ -9,19 +9,19 @@ import javax.swing.*;
  */
 public class PasteInfoNode implements IconVisitable {
 
-    private String info;
+  private String info;
 
-    public PasteInfoNode(String info) {
-        this.info = info;
-    }
+  public PasteInfoNode(String info) {
+    this.info = info;
+  }
 
-    @Override
-    public String toString() {
-        return info;
-    }
+  @Override
+  public String toString() {
+    return info;
+  }
 
-    @Override
-    public Icon visitNode(IconVisitor iconVisitor) {
-        return iconVisitor.visit(this);
-    }
+  @Override
+  public Icon visitNode(IconVisitor iconVisitor) {
+    return iconVisitor.visit(this);
+  }
 }
