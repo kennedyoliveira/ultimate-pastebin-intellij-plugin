@@ -227,19 +227,26 @@ public class ToolWindowServiceImpl implements ToolWindowService {
     Object selectedObject = selectionPath.getLastPathComponent();
 
     if (selectedObject != null && selectedObject instanceof DefaultMutableTreeNode) {
-      DefaultMutableTreeNode selectedNode = (DefaultMutableTreeNode) selectedObject;
-
-      if (selectedNode.getUserObject() instanceof PasteNode) {
-        return Optional.of(((PasteNode) selectedNode.getUserObject()).getPaste());
-      } else if (selectedNode.getUserObject() instanceof PasteInfoNode) {
-        Object parentUserObject = ((DefaultMutableTreeNode) selectedNode.getParent()).getUserObject();
-
-        if (parentUserObject instanceof PasteNode) {
-          return Optional.of(((PasteNode) parentUserObject).getPaste());
-        }
-      }
+      return getPaste((DefaultMutableTreeNode) selectedObject);
     }
 
     return Optional.empty();
+  }
+
+  private Optional<Paste> getPaste(DefaultMutableTreeNode selectedNode) {
+    if (selectedNode.getUserObject() instanceof PasteNode) {
+      return getPasteFromTreeNode(selectedNode.getUserObject());
+    } else if (selectedNode.getUserObject() instanceof PasteInfoNode) {
+      // gets the parent node, since the paste info is a child of a paste
+      Object parentUserObject = ((DefaultMutableTreeNode) selectedNode.getParent()).getUserObject();
+
+      return getPasteFromTreeNode(parentUserObject);
+    }
+
+    return Optional.empty();
+  }
+
+  private Optional<Paste> getPasteFromTreeNode(Object object) {
+    return (object instanceof PasteNode) ? Optional.of(((PasteNode) object).getPaste()) : Optional.empty();
   }
 }

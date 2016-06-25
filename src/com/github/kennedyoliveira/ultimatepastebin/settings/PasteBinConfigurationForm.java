@@ -12,6 +12,7 @@ import com.intellij.openapi.progress.ProgressIndicator;
 import com.intellij.openapi.progress.Task;
 import com.intellij.openapi.ui.popup.Balloon;
 import com.intellij.openapi.ui.popup.JBPopupFactory;
+import com.intellij.openapi.util.text.StringUtil;
 import com.intellij.ui.awt.RelativePoint;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
@@ -93,37 +94,19 @@ public class PasteBinConfigurationForm extends JPanel {
     String devKey = devkey.getText();
 
     // Validation
-    if (username == null || username.isEmpty()) {
-      Balloon titulo = createErrorBalloon(MessageBundle.getMessage("ultimatepastebin.form.validation.required"),
-                                          MessageBundle.getMessage("ultimatepastebin.form.validation.username.null"));
-
-      titulo.show(new RelativePoint(userName, new Point(userName.getSize().width / 2, userName.getSize().height / 2)), Balloon.Position.below);
-
-      userName.requestFocus();
-      return;
+    if (ensureCredentialsFilled(username, password, devKey)) {
+      validateCredentials(username, password, devKey);
     }
+  }
 
-    if (password == null || password.length == 0) {
-      Balloon errorBalloon = createErrorBalloon(MessageBundle.getMessage("ultimatepastebin.form.validation.required"),
-                                                MessageBundle.getMessage("ultimatepastebin.form.validation.password.null"));
-
-      errorBalloon.show(new RelativePoint(this.password, new Point(this.password.getSize().width / 2, this.password.getSize().height / 2)), Balloon.Position.below);
-
-      this.password.requestFocus();
-      return;
-    }
-
-    if (devKey == null || devKey.isEmpty()) {
-      Balloon errorBalloon = createErrorBalloon(MessageBundle.getMessage("ultimatepastebin.form.validation.required"),
-                                                MessageBundle.getMessage("ultimatepastebin.form.validation.devkey.null"));
-
-      errorBalloon.show(new RelativePoint(this.devkey, new Point(this.devkey.getSize().width / 2, this.devkey.getSize().height / 2)), Balloon.Position.below);
-
-      this.devkey.requestFocus();
-      return;
-    }
-
-    // Run the check in background to keep responsive
+  /**
+   * Try to log into PasteBin.
+   *
+   * @param username The username filled in the form
+   * @param password The password filled in the form
+   * @param devKey   The devkey filled in the form.
+   */
+  private void validateCredentials(final String username, final char[] password, final String devKey) {// Run the check in background to keep responsive
     new Task.Backgroundable(null, MessageBundle.getMessage("ultimatepastebin.settings.login.validation.title"), false, PerformInBackgroundOption.DEAF) {
       @Override
       public void run(@NotNull ProgressIndicator indicator) {
@@ -142,6 +125,48 @@ public class PasteBinConfigurationForm extends JPanel {
         }
       }
     }.queue();
+  }
+
+  /**
+   * Check if the credentials information are filled and show notifications to users
+   *
+   * @param username The username filled in the form
+   * @param password The password filled in the form
+   * @param devKey   The devkey filled in the form.
+   * @return {@link Boolean#TRUE} if everything is correct, {@link Boolean#FALSE} otherwise.
+   */
+  private boolean ensureCredentialsFilled(String username, char[] password, String devKey) {
+    if (StringUtil.isEmpty(username)) {
+      Balloon titulo = createErrorBalloon(MessageBundle.getMessage("ultimatepastebin.form.validation.required"),
+                                          MessageBundle.getMessage("ultimatepastebin.form.validation.username.null"));
+
+      titulo.show(new RelativePoint(userName, new Point(userName.getSize().width / 2, userName.getSize().height / 2)), Balloon.Position.below);
+
+      userName.requestFocus();
+      return false;
+    }
+
+    if (password == null || password.length == 0) {
+      Balloon errorBalloon = createErrorBalloon(MessageBundle.getMessage("ultimatepastebin.form.validation.required"),
+                                                MessageBundle.getMessage("ultimatepastebin.form.validation.password.null"));
+
+      errorBalloon.show(new RelativePoint(this.password, new Point(this.password.getSize().width / 2, this.password.getSize().height / 2)), Balloon.Position.below);
+
+      this.password.requestFocus();
+      return false;
+    }
+
+    if (StringUtil.isEmpty(devKey)) {
+      Balloon errorBalloon = createErrorBalloon(MessageBundle.getMessage("ultimatepastebin.form.validation.required"),
+                                                MessageBundle.getMessage("ultimatepastebin.form.validation.devkey.null"));
+
+      errorBalloon.show(new RelativePoint(this.devkey, new Point(this.devkey.getSize().width / 2, this.devkey.getSize().height / 2)), Balloon.Position.below);
+
+      this.devkey.requestFocus();
+      return false;
+    }
+
+    return true;
   }
 
   /**

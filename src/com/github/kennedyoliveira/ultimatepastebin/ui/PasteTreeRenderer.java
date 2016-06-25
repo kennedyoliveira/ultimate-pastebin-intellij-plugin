@@ -14,6 +14,7 @@ import java.awt.*;
  * @author kennedy
  */
 public class PasteTreeRenderer extends DefaultTreeRenderer {
+
   @Override
   public Component getTreeCellRendererComponent(JTree tree, Object value, boolean selected, boolean expanded, boolean leaf, int row, boolean hasFocus) {
     Component component = super.getTreeCellRendererComponent(tree, value, selected, expanded, leaf, row, hasFocus);
@@ -26,14 +27,18 @@ public class PasteTreeRenderer extends DefaultTreeRenderer {
       if (node.isRoot())
         return component;
 
-      Object userObject = node.getUserObject();
-
-      if (userObject instanceof IconVisitable) {
-        Icon icon = ((IconVisitable) userObject).visitNode(new IconVisitor());
-        ((WrappingIconPanel) component).setIcon(icon);
-      }
+      updateIcon((WrappingIconPanel) component, node);
     }
 
     return component;
+  }
+
+  private void updateIcon(WrappingIconPanel component, DefaultMutableTreeNode node) {
+    Object userObject = node.getUserObject();
+
+    if (userObject instanceof IconVisitable) {
+      Icon icon = ((IconVisitable) userObject).visitNode(new IconVisitor());
+      component.setIcon(icon);
+    }
   }
 }
