@@ -28,7 +28,8 @@ import static com.github.kennedyoliveira.ultimatepastebin.i18n.MessageBundle.get
  */
 public class UltimatePasteBin implements ApplicationComponent {
 
-  private final static Logger log = UltimatePasteBinUtils.LOG;
+  private static final Logger log = UltimatePasteBinUtils.LOG;
+  private static final String ULTIMATE_PASTE_BIN = "Ultimate PasteBin";
 
   @Override
   public void initComponent() {
@@ -65,7 +66,7 @@ public class UltimatePasteBin implements ApplicationComponent {
     // Gets the welcome message
     String message = getMessage("ultimatepastebin.welcomemessage", PROJECT_URL, DONATION_URL);
 
-    Notifications.Bus.notify(new Notification("Ultimate PasteBin Welcome Message", "Ultimate PasteBin", message, NotificationType.INFORMATION, (notification, event) -> {
+    Notifications.Bus.notify(new Notification("Ultimate PasteBin Welcome Message", ULTIMATE_PASTE_BIN, message, NotificationType.INFORMATION, (notification, event) -> {
       if ("#settings".equals(event.getDescription())) {
         ShowSettingsUtil.getInstance().showSettingsDialog(null, PasteBinConfigurableSettings.class);
       } else {

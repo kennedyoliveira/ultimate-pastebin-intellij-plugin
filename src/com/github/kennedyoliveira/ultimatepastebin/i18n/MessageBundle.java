@@ -3,8 +3,8 @@ package com.github.kennedyoliveira.ultimatepastebin.i18n;
 import com.github.kennedyoliveira.ultimatepastebin.settings.PasteBinConfigurationService;
 import com.intellij.CommonBundle;
 import com.intellij.openapi.components.ServiceManager;
-import com.sun.istack.internal.Nullable;
 import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 
 import java.util.*;
 
@@ -13,8 +13,8 @@ import java.util.*;
  */
 public class MessageBundle {
 
-  private final static Map<String, Locale> availableTranslations;
-  private final static PasteBinConfigurationService pasteBinConfigurationService;
+  private static final Map<String, Locale> availableTranslations;
+  private static final PasteBinConfigurationService pasteBinConfigurationService;
 
   static {
     pasteBinConfigurationService = ServiceManager.getService(PasteBinConfigurationService.class);
@@ -28,6 +28,14 @@ public class MessageBundle {
     availableTranslations.put("Norwegian", new Locale.Builder().setLanguage("no").build());
   }
 
+  private MessageBundle() {}
+
+  /**
+   * Get the message acconding
+   * @param key
+   * @param params
+   * @return
+   */
   @Nullable
   public static String getMessage(String key, Object... params) {
     return CommonBundle.message(getBundle(), key, params);

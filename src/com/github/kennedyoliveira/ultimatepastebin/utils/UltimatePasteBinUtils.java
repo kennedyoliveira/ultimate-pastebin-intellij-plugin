@@ -28,6 +28,8 @@ public class UltimatePasteBinUtils {
    */
   public final static Logger LOG = Logger.getInstance("ultimatepastebin");
 
+  private UltimatePasteBinUtils() {}
+
   /**
    * <p>Shows a simple message info message box.</p>
    * <p>Sometimes in OS X the default message box {@link Messages#showIdeaMessageDialog(Project, String, String, String[], int, Icon, DialogWrapper.DoNotAskOption)} do not work,
@@ -73,7 +75,7 @@ public class UltimatePasteBinUtils {
    */
   public static Optional<PasteHighLight> getHighlighFromVirtualFile(@Nullable VirtualFile file) {
     if (file == null)
-      Optional.empty();
+      return Optional.empty();
 
     String defaultFileExtension = file.getFileType().getDefaultExtension();
 
@@ -99,7 +101,7 @@ public class UltimatePasteBinUtils {
     try {
       return Optional.of(new String(virtualFile.contentsToByteArray(), virtualFile.getCharset()));
     } catch (IOException e) {
-      LOG.debug("Error while fetching the contents of a virtual file [" + virtualFile.getName() + "]");
+      LOG.debug("Error while fetching the contents of a virtual file [" + virtualFile.getName() + "]", e);
       return Optional.empty();
     }
   }

@@ -9,7 +9,6 @@ import com.intellij.openapi.actionSystem.AnAction;
 import com.intellij.openapi.actionSystem.AnActionEvent;
 import com.intellij.openapi.actionSystem.DataKeys;
 import com.intellij.openapi.components.ServiceManager;
-import com.intellij.openapi.diagnostic.Logger;
 import com.intellij.openapi.editor.Editor;
 import com.intellij.openapi.fileTypes.FileType;
 import com.intellij.openapi.fileTypes.PlainTextFileType;
@@ -21,8 +20,6 @@ import static com.github.kennedyoliveira.ultimatepastebin.i18n.MessageBundle.get
  * Action to create a new paste.
  */
 public class CreatePasteAction extends AnAction {
-
-  private final static Logger log = UltimatePasteBinUtils.LOG;
 
   @Override
   public void actionPerformed(AnActionEvent e) {

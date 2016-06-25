@@ -1,7 +1,6 @@
 package com.github.kennedyoliveira.ultimatepastebin.action;
 
 import com.github.kennedyoliveira.pastebin4j.Paste;
-import com.github.kennedyoliveira.ultimatepastebin.i18n.MessageBundle;
 import com.github.kennedyoliveira.ultimatepastebin.service.PasteBinService;
 import com.github.kennedyoliveira.ultimatepastebin.service.ToolWindowService;
 import com.intellij.ide.actions.ShowFilePathAction;
@@ -38,8 +37,8 @@ public class SavePasteContentToFileAction extends AbstractPasteSelectedAction {
     if (selectedPaste.isPresent()) {
       Paste paste = selectedPaste.get();
 
-      FileSaverDescriptor fileSaverDescriptor = new FileSaverDescriptor(MessageBundle.getMessage("ultimatepastebin.actions.copypastecontentstofile.savefiledialog.title"),
-                                                                        MessageBundle.getMessage("ultimatepastebin.actions.copypastecontentstofile.savefiledialog.description"),
+      FileSaverDescriptor fileSaverDescriptor = new FileSaverDescriptor(getMessage("ultimatepastebin.actions.copypastecontentstofile.savefiledialog.title"),
+                                                                        getMessage("ultimatepastebin.actions.copypastecontentstofile.savefiledialog.description"),
                                                                         "txt",
                                                                         paste.getHighLight().toString());
 
@@ -66,12 +65,9 @@ public class SavePasteContentToFileAction extends AbstractPasteSelectedAction {
 
               Notifications.Bus.notify(new Notification("Paste contents saved to file",
                                                         "Ultimate PasteBin",
-                                                        String.format(getMessage("ultimatepastebin.actions.copypastecontentstofile.ok.notification.message",
-                                                                                 fileManager)),
+                                                        getMessage("ultimatepastebin.actions.copypastecontentstofile.ok.notification.message", fileManager),
                                                         NotificationType.INFORMATION,
-                                                        (notification, event) -> {
-                                                          ShowFilePathAction.openFile(fileToSave.getFile());
-                                                        }), e.getProject());
+                                                        (notification, event) -> ShowFilePathAction.openFile(fileToSave.getFile())), e.getProject());
             } catch (Exception e) {
               Notifications.Bus.notify(new Notification("Error fetching paste contents",
                                                         "Ultimate PasteBin",

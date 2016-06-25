@@ -1,7 +1,7 @@
 package com.github.kennedyoliveira.ultimatepastebin.utils;
 
 import com.github.kennedyoliveira.pastebin4j.PasteHighLight;
-import com.sun.istack.internal.Nullable;
+import org.jetbrains.annotations.Nullable;
 
 import java.util.Arrays;
 import java.util.Map;
@@ -15,7 +15,7 @@ import static java.util.stream.Collectors.toMap;
  */
 public class SyntaxHighlighUtils {
 
-  private final static Map<String, PasteHighLight> highLightByFileType;
+  private static final Map<String, PasteHighLight> highLightByFileType;
 
   static {
     highLightByFileType = Arrays.stream(PasteHighLight.values()).collect(toMap(p -> p.toString().toLowerCase(), identity(), (p1, p2) -> p1));

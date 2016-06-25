@@ -5,6 +5,9 @@ import com.github.kennedyoliveira.pastebin4j.UserInformation;
 import com.github.kennedyoliveira.ultimatepastebin.settings.PasteBinConfigurationService;
 
 
+/**
+ * Interface providing the access for PasteBin interaction.
+ */
 public interface PasteBinService {
   /**
    * @return If the credentials are valid or not

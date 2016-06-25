@@ -32,7 +32,7 @@ import static java.util.Comparator.comparing;
  */
 public class ToolWindowServiceImpl implements ToolWindowService {
 
-  private final static Logger log = UltimatePasteBinUtils.LOG;
+  private static final Logger log = UltimatePasteBinUtils.LOG;
 
   /**
    * Node representing the User Information
