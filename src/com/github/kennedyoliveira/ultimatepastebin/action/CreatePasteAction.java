@@ -59,7 +59,18 @@ public class CreatePasteAction extends AnAction {
 
     PasteBinConfigurationService configurationService = ServiceManager.getService(PasteBinConfigurationService.class);
 
-    e.getPresentation().setEnabled(configurationService.isValidCredentials());
+    // Gets the selected text
+    Editor editor = e.getData(DataKeys.EDITOR);
+
+    // Gets all the selected files
+    VirtualFile[] selectedFiles = e.getData(DataKeys.VIRTUAL_FILE_ARRAY);
+
+    final boolean hasTextSelectedInEditor = editor != null && editor.getSelectionModel().getSelectedText() != null;
+    final boolean hasFileSelectedInProjectWindow = selectedFiles != null && selectedFiles.length == 1 && !selectedFiles[0].isDirectory();
+
+    final boolean shouldEnableCreatePasteAction = configurationService.isValidCredentials() && (hasTextSelectedInEditor || hasFileSelectedInProjectWindow);
+
+    e.getPresentation().setEnabled(shouldEnableCreatePasteAction);
 
     e.getPresentation().setText(getMessage("ultimatepastebin.actions.createpaste.text"));
     e.getPresentation().setDescription(getMessage("ultimatepastebin.actions.createpaste.description"));
