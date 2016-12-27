@@ -36,7 +36,7 @@ public class PasteNodeUtil {
     pasteNode.add(new DefaultMutableTreeNode(new PasteInfoNode(getMessage("ultimatepastebin.paste.expiration", paste.getExpiration().name()))));
     pasteNode.add(new DefaultMutableTreeNode(new PasteInfoNode(getMessage("ultimatepastebin.paste.expirationdate", paste.getExpiration() == NEVER ? getMessage("ultimatepastebin.paste.expiration.never") : formatDateTime(paste.getLocalExpirationDate())))));
     pasteNode.add(new DefaultMutableTreeNode(new PasteInfoNode(getMessage("ultimatepastebin.paste.views", paste.getHits()))));
-    pasteNode.add(new DefaultMutableTreeNode(new PasteInfoNode(getMessage("ultimatepastebin.paste.highligh", paste.getHighLight().name()))));
+    pasteNode.add(new DefaultMutableTreeNode(new PasteInfoNode(getMessage("ultimatepastebin.paste.highlight", paste.getHighLight().name()))));
 
     return pasteNode;
   }

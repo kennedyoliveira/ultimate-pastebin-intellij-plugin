@@ -10,6 +10,7 @@ Currently the plugin only supports the languages below:
 - Português Brasileiro (By Aninha Pessoni)
 - French (By Vinetos)
 - Norwegian (By Kim Iversen [kimfy])
+- Dutch (By Thibault Helsmoortel)
 
 ### Translation
 
