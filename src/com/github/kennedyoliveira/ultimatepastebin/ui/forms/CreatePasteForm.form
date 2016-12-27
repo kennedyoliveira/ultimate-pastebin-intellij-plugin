@@ -87,7 +87,7 @@
             </constraints>
             <properties>
               <labelFor value="bbe7c"/>
-              <text resource-bundle="messages" key="ultimatepastebin.createpaste.form.label.syntaxhighligh"/>
+              <text resource-bundle="messages" key="ultimatepastebin.createpaste.form.label.syntaxhighlight"/>
             </properties>
           </component>
           <component id="bbe7c" class="javax.swing.JComboBox" binding="pasteHighlight">
