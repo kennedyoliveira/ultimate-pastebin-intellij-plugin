@@ -22,7 +22,8 @@ public class MessageBundle {
     // Defines the available languages in the format of key = Name of the language, Value the locale used
     availableTranslations = new HashMap<>();
 
-    availableTranslations.put("Português Brasileiro", new Locale.Builder().setLanguage("pt").setRegion("BR").build());
+    availableTranslations.put("German", new Locale.Builder().setLanguage("de").build());
+    availableTranslations.put("PortuguÃªs Brasileiro", new Locale.Builder().setLanguage("pt").setRegion("BR").build());
     availableTranslations.put("English", new Locale.Builder().setLanguage("en").build());
     availableTranslations.put("French", new Locale.Builder().setLanguage("fr").build());
     availableTranslations.put("Norwegian", new Locale.Builder().setLanguage("no").build());
