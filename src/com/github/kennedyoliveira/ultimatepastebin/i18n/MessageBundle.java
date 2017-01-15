@@ -27,6 +27,7 @@ public class MessageBundle {
     availableTranslations.put("English", new Locale.Builder().setLanguage("en").build());
     availableTranslations.put("French", new Locale.Builder().setLanguage("fr").build());
     availableTranslations.put("Norwegian", new Locale.Builder().setLanguage("no").build());
+    availableTranslations.put("Nederlands", new Locale.Builder().setLanguage("nl").build());
   }
 
   private MessageBundle() {}
