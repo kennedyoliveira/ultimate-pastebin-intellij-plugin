@@ -12,7 +12,11 @@ import com.intellij.openapi.diagnostic.Logger;
 import com.intellij.openapi.util.text.StringUtil;
 import org.jdom.Element;
 import org.jetbrains.annotations.Contract;
+import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
+
+import java.util.Objects;
+import java.util.Optional;
 
 import static com.github.kennedyoliveira.ultimatepastebin.UltimatePasteBinConstants.MAX_PASTES_TO_FETCH;
 
@@ -24,8 +28,8 @@ import static com.github.kennedyoliveira.ultimatepastebin.UltimatePasteBinConsta
 @State(name = "ultimatepastebin", storages = @Storage(id = "main", file = "ultimatepastebin_settings.xml"))
 public class PasteBinConfigurationServiceImpl implements PersistentStateComponent<Element>, PasteBinConfigurationService {
 
-  private final static Logger log = UltimatePasteBinUtils.LOG;
-  private final static String ULTIMATE_PASTEBIN_PASSWORD_KEY = "ULTIMATE_PASTEBIN_KEY";
+  private static final Logger log = UltimatePasteBinUtils.log;
+  private static final String ULTIMATE_PASTEBIN_PASSWORD_KEY = "ULTIMATE_PASTEBIN_KEY";
 
   /**
    * User name to authenticate at Pastebin.
@@ -98,10 +102,8 @@ public class PasteBinConfigurationServiceImpl implements PersistentStateComponen
       this.totalPastesToFetch = UltimatePasteBinConstants.DEFAULT_TOTAL_PASTES_TO_FETCH;
     }
 
-    String currentLanguage = state.getAttributeValue("currentLanguage");
-
-    if (currentLanguage != null)
-      this.currentLanguage = currentLanguage;
+    Optional.ofNullable(state.getAttributeValue("currentLanguage"))
+            .ifPresent(this::setCurrentLanguage);
   }
 
   @Override
@@ -130,8 +132,8 @@ public class PasteBinConfigurationServiceImpl implements PersistentStateComponen
   @Contract(pure = true)
   public boolean isAuthInfoPresent() {
     return StringUtil.isNotEmpty(username)
-        && StringUtil.isNotEmpty(devkey)
-        && StringUtil.isNotEmpty(getPassword());
+      && StringUtil.isNotEmpty(devkey)
+      && StringUtil.isNotEmpty(getPassword());
   }
 
   @Override
@@ -186,6 +188,7 @@ public class PasteBinConfigurationServiceImpl implements PersistentStateComponen
   }
 
   @Override
+  @NotNull
   public String getUsername() {
     return StringUtil.notNullize(username);
   }
@@ -196,6 +199,7 @@ public class PasteBinConfigurationServiceImpl implements PersistentStateComponen
   }
 
   @Override
+  @NotNull
   public String getDevkey() {
     return StringUtil.notNullize(devkey);
   }
@@ -209,25 +213,17 @@ public class PasteBinConfigurationServiceImpl implements PersistentStateComponen
   public boolean equals(Object o) {
     if (this == o) return true;
     if (o == null || getClass() != o.getClass()) return false;
-
     PasteBinConfigurationServiceImpl that = (PasteBinConfigurationServiceImpl) o;
-
-    if (showedWelcomeMessage != that.showedWelcomeMessage) return false;
-    if (validCredentials != that.validCredentials) return false;
-    if (totalPastesToFetch != that.totalPastesToFetch) return false;
-    if (username != null ? !username.equals(that.username) : that.username != null) return false;
-    if (devkey != null ? !devkey.equals(that.devkey) : that.devkey != null) return false;
-    return currentLanguage != null ? currentLanguage.equals(that.currentLanguage) : that.currentLanguage == null;
+    return showedWelcomeMessage == that.showedWelcomeMessage &&
+      validCredentials == that.validCredentials &&
+      totalPastesToFetch == that.totalPastesToFetch &&
+      Objects.equals(username, that.username) &&
+      Objects.equals(devkey, that.devkey) &&
+      Objects.equals(currentLanguage, that.currentLanguage);
   }
 
   @Override
   public int hashCode() {
-    int result = username != null ? username.hashCode() : 0;
-    result = 31 * result + (devkey != null ? devkey.hashCode() : 0);
-    result = 31 * result + (showedWelcomeMessage ? 1 : 0);
-    result = 31 * result + (validCredentials ? 1 : 0);
-    result = 31 * result + totalPastesToFetch;
-    result = 31 * result + (currentLanguage != null ? currentLanguage.hashCode() : 0);
-    return result;
+    return Objects.hash(username, devkey, showedWelcomeMessage, validCredentials, totalPastesToFetch, currentLanguage);
   }
 }

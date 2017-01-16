@@ -1,6 +1,7 @@
 package com.github.kennedyoliveira.ultimatepastebin.utils;
 
 import com.github.kennedyoliveira.pastebin4j.PasteHighLight;
+import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.Arrays;
@@ -45,7 +46,7 @@ public class SyntaxHighlighUtils {
    * @param fileExtension File extension, ex: java
    * @return An Optional with the {@link PasteHighLight}
    */
-  @Nullable
+  @NotNull
   public static Optional<PasteHighLight> getHighlighByFileExtension(@Nullable String fileExtension) {
     if (fileExtension == null || fileExtension.isEmpty()) {
       return Optional.empty();

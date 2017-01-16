@@ -3,7 +3,6 @@ package com.github.kennedyoliveira.ultimatepastebin.utils;
 import com.github.kennedyoliveira.pastebin4j.PasteHighLight;
 import com.intellij.openapi.diagnostic.Logger;
 import com.intellij.openapi.project.Project;
-import com.intellij.openapi.ui.DialogWrapper;
 import com.intellij.openapi.ui.Messages;
 import com.intellij.openapi.util.SystemInfo;
 import com.intellij.openapi.vfs.VirtualFile;
@@ -26,13 +25,13 @@ public class UltimatePasteBinUtils {
   /**
    * General Logger for UltimatePasteBin
    */
-  public final static Logger LOG = Logger.getInstance("ultimatepastebin");
+  public static final Logger log = Logger.getInstance("ultimatepastebin");
 
   private UltimatePasteBinUtils() {}
 
   /**
    * <p>Shows a simple message info message box.</p>
-   * <p>Sometimes in OS X the default message box {@link Messages#showIdeaMessageDialog(Project, String, String, String[], int, Icon, DialogWrapper.DoNotAskOption)} do not work,
+   * <p>Sometimes in OS X the default message box {@link Messages#showIdeaMessageDialog(Project, String, String, String[], int, Icon, com.intellij.openapi.ui.DialogWrapper.DoNotAskOption)} do not work,
    * so if you are on OS X this method use {@link Messages#showInfoMessage(Component, String, String)} that works.</p>
    *
    * @param project The project
@@ -77,14 +76,14 @@ public class UltimatePasteBinUtils {
     if (file == null)
       return Optional.empty();
 
-    String defaultFileExtension = file.getFileType().getDefaultExtension();
+    final String defaultFileExtension = file.getFileType().getDefaultExtension();
 
-    Optional<PasteHighLight> byDefaultExtension = getHighlighByFileExtension(defaultFileExtension);
+    final Optional<PasteHighLight> byDefaultExtension = getHighlighByFileExtension(defaultFileExtension);
 
     if (byDefaultExtension.isPresent())
       return byDefaultExtension;
 
-    String extension = file.getExtension();
+    final String extension = file.getExtension();
     return getHighlighByFileExtension(extension);
   }
 
@@ -101,7 +100,7 @@ public class UltimatePasteBinUtils {
     try {
       return Optional.of(new String(virtualFile.contentsToByteArray(), virtualFile.getCharset()));
     } catch (IOException e) {
-      LOG.debug("Error while fetching the contents of a virtual file [" + virtualFile.getName() + "]", e);
+      log.debug("Error while fetching the contents of a virtual file [" + virtualFile.getName() + "]", e);
       return Optional.empty();
     }
   }

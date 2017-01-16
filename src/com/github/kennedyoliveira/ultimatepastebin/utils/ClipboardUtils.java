@@ -11,7 +11,7 @@ import java.awt.datatransfer.StringSelection;
  */
 public class ClipboardUtils {
 
-  private static final Logger log = UltimatePasteBinUtils.LOG;
+  private static final Logger log = UltimatePasteBinUtils.log;
 
   private ClipboardUtils() {
   }

@@ -12,7 +12,7 @@ import java.util.Objects;
  */
 public class StreamUtils {
 
-  private static final Logger log = UltimatePasteBinUtils.LOG;
+  private static final Logger log = UltimatePasteBinUtils.log;
 
   private StreamUtils() {
   }

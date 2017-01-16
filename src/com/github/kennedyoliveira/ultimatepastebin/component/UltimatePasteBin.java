@@ -28,7 +28,7 @@ import static com.github.kennedyoliveira.ultimatepastebin.i18n.MessageBundle.get
  */
 public class UltimatePasteBin implements ApplicationComponent {
 
-  private static final Logger log = UltimatePasteBinUtils.LOG;
+  private static final Logger log = UltimatePasteBinUtils.log;
   private static final String ULTIMATE_PASTE_BIN = "Ultimate PasteBin";
 
   @Override
