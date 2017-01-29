@@ -1,7 +1,5 @@
 <br>
-Version 1.5.0
+Version 1.5.1
 <ul>
-<li>Added Dutch(NL) translation, thanks @Thibault Helsmoortel!</li>
-<li>Added thanks German translation, @Leo Decking!</li>
-<li>Dropped support for old IntelliJ and other IntelliJ based platforms before (<) build 143.0</li>
+<li>Fixing <a href="https://github.com/kennedyoliveira/ultimate-pastebin-intellij-plugin/issues/14">#14</a></li>
 </ul>

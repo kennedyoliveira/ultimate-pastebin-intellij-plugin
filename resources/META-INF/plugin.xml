@@ -1,7 +1,7 @@
 <idea-plugin version="2">
     <id>com.github.kennedyoliveira.ultimatepastebin</id>
     <name>Ultimate PasteBin</name>
-    <version>1.5.0</version>
+    <version>1.5.1</version>
     <vendor email="kennedy.oliveira@outlook.com" url="https://github.com/kennedyoliveira">Kennedy Oliveira</vendor>
 
     <description><![CDATA[
@@ -16,6 +16,12 @@
     ]]></description>
 
     <change-notes><![CDATA[
+      <p>
+      Version 1.5.1
+      <ul>
+      <li>Fixing <a href="https://github.com/kennedyoliveira/ultimate-pastebin-intellij-plugin/issues/14">#14</a></li>
+      </ul>
+
       <p>
       Version 1.5.0
       <ul>
