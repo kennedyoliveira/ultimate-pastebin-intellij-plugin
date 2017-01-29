@@ -7,7 +7,7 @@ import com.github.kennedyoliveira.ultimatepastebin.ui.forms.CreatePasteForm;
 import com.github.kennedyoliveira.ultimatepastebin.utils.UltimatePasteBinUtils;
 import com.intellij.openapi.actionSystem.AnAction;
 import com.intellij.openapi.actionSystem.AnActionEvent;
-import com.intellij.openapi.actionSystem.DataKeys;
+import com.intellij.openapi.actionSystem.CommonDataKeys;
 import com.intellij.openapi.components.ServiceManager;
 import com.intellij.openapi.editor.Editor;
 import com.intellij.openapi.fileTypes.FileType;
@@ -24,7 +24,7 @@ public class CreatePasteAction extends AnAction {
   @Override
   public void actionPerformed(AnActionEvent e) {
     // Gets the selected text
-    Editor editor = e.getData(DataKeys.EDITOR);
+    Editor editor = e.getData(CommonDataKeys.EDITOR);
 
     // Default plain text
     FileType fileType = PlainTextFileType.INSTANCE;
@@ -36,7 +36,7 @@ public class CreatePasteAction extends AnAction {
       paste.setContent(editor.getSelectionModel().getSelectedText());
     } else {
       // Gets all the selected files
-      VirtualFile[] selectedFiles = e.getData(DataKeys.VIRTUAL_FILE_ARRAY);
+      VirtualFile[] selectedFiles = e.getData(CommonDataKeys.VIRTUAL_FILE_ARRAY);
 
       // When there is multiple files selected, i do nothing
       if (selectedFiles != null && selectedFiles.length == 1 && !selectedFiles[0].isDirectory()) {
@@ -60,10 +60,10 @@ public class CreatePasteAction extends AnAction {
     PasteBinConfigurationService configurationService = ServiceManager.getService(PasteBinConfigurationService.class);
 
     // Gets the selected text
-    Editor editor = e.getData(DataKeys.EDITOR);
+    Editor editor = e.getData(CommonDataKeys.EDITOR);
 
     // Gets all the selected files
-    VirtualFile[] selectedFiles = e.getData(DataKeys.VIRTUAL_FILE_ARRAY);
+    VirtualFile[] selectedFiles = e.getData(CommonDataKeys.VIRTUAL_FILE_ARRAY);
 
     final boolean hasTextSelectedInEditor = editor != null && editor.getSelectionModel().getSelectedText() != null;
     final boolean hasFileSelectedInProjectWindow = selectedFiles != null && selectedFiles.length == 1 && !selectedFiles[0].isDirectory();
