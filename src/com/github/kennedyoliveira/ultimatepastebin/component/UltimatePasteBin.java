@@ -50,13 +50,6 @@ public class UltimatePasteBin implements ApplicationComponent {
     // Show welcome message
     if (!configurationService.isShowedWelcomeMessage()) {
       showWelcomeMessage();
-    } else {
-      if (configurationService.isAuthInfoPresent()) {
-        validateSavedConfiguration();
-      } else {
-        // If there's no configuration
-        noConfigAvailable();
-      }
     }
   }
 
@@ -79,47 +72,6 @@ public class UltimatePasteBin implements ApplicationComponent {
 
     configurationService.setShowedWelcomeMessage(true);
     configurationService.setVersion(VERSION);
-  }
-
-  /**
-   * Validates the saved configuration for the plugin.
-   */
-  private void validateSavedConfiguration() {
-    boolean validCredentials = false;
-
-    try {
-      PasteBinService pasteBinService = ServiceManager.getService(PasteBinService.class);
-
-      validCredentials = pasteBinService.isCredentialsValid();
-    } catch (Exception e) {
-      log.error("Validating stored credentials", e);
-    }
-
-    if (!validCredentials) {
-      Notifications.Bus.notify(new Notification("Invalid configuration for Ultimate PasteBin",
-                                                "Ultimate PasteBin",
-                                                getMessage("ultimatepastebin.invalid.credentials"),
-                                                NotificationType.ERROR,
-                                                (notification, event) -> {
-                                                  ShowSettingsUtil.getInstance().showSettingsDialog(null, PasteBinConfigurableSettings.class);
-                                                  notification.expire();
-                                                }));
-    } else {
-      ServiceManager.getService(ToolWindowService.class).fetchPastes();
-    }
-  }
-
-  /**
-   * If there's no config available take some action to notify the user.
-   */
-  private void noConfigAvailable() {
-    Notifications.Bus.notify(new Notification("No Configuration Found for Ultimate PasteBin",
-                                              "Ultimate PasteBin",
-                                              getMessage("ultimatepastebin.missing.configuration"),
-                                              NotificationType.WARNING,
-                                              (notification, event) -> {
-                                                ShowSettingsUtil.getInstance().showSettingsDialog(null, PasteBinConfigurableSettings.class);
-                                              }));
   }
 
   /**
