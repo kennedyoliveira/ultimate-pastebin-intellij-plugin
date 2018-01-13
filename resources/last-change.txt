@@ -1,5 +1,6 @@
 <br>
-Version 1.5.1
+Version 1.5.2
 <ul>
-<li>Fixing <a href="https://github.com/kennedyoliveira/ultimate-pastebin-intellij-plugin/issues/14">#14</a></li>
+<li>Fixing <a href="https://github.com/kennedyoliveira/ultimate-pastebin-intellij-plugin/issues/6">#6</a></li>
+<li>Fixing <a href="https://github.com/kennedyoliveira/ultimate-pastebin-intellij-plugin/issues/19">#19</a></li>
 </ul>
