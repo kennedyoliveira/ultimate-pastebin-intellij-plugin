@@ -1,10 +1,12 @@
 package com.github.kennedyoliveira.ultimatepastebin.ui;
 
 import com.github.kennedyoliveira.ultimatepastebin.service.ToolWindowService;
+import com.github.kennedyoliveira.ultimatepastebin.utils.UltimatePasteBinUtils;
 import com.intellij.openapi.actionSystem.ActionGroup;
 import com.intellij.openapi.actionSystem.ActionManager;
 import com.intellij.openapi.actionSystem.ActionPlaces;
 import com.intellij.openapi.components.ServiceManager;
+import com.intellij.openapi.diagnostic.Logger;
 import com.intellij.openapi.project.Project;
 import com.intellij.openapi.ui.SimpleToolWindowPanel;
 import com.intellij.openapi.wm.ToolWindow;
@@ -21,8 +23,11 @@ import javax.swing.*;
  */
 public class UltimatePasteBinToolWindow implements ToolWindowFactory {
 
+  private static final Logger logger = UltimatePasteBinUtils.logger;
+
   @Override
   public void createToolWindowContent(@NotNull Project project, @NotNull ToolWindow toolWindow) {
+    logger.info("Initializing Pastes ToolWindow");
     toolWindow.setStripeTitle("Ultimate PasteBin");
     toolWindow.setTitle("Ultimate PasteBin");
 

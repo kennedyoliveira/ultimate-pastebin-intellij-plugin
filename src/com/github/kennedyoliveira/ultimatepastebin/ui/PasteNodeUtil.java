@@ -16,7 +16,9 @@ import static com.github.kennedyoliveira.ultimatepastebin.i18n.MessageBundle.get
  */
 public class PasteNodeUtil {
 
-  private final static DateTimeFormatter DEFAULT_DATETIME_FORMATTER = DateTimeFormatter.ofPattern("dd/MM/yyyy kk:mm");
+  private PasteNodeUtil() {}
+
+  private static final DateTimeFormatter DEFAULT_DATETIME_FORMATTER = DateTimeFormatter.ofPattern("dd/MM/yyyy kk:mm");
 
   /**
    * <p>Creates a {@link MutableTreeNode} representing a {@link Paste} and its infos, wrapping the data in {@link PasteNode} and {@link PasteInfoNode}</p>
@@ -27,7 +29,7 @@ public class PasteNodeUtil {
   public static MutableTreeNode createNodeForPaste(Paste paste) {
     Objects.requireNonNull(paste);
 
-    DefaultMutableTreeNode pasteNode = new DefaultMutableTreeNode(new PasteNode(paste));
+    final DefaultMutableTreeNode pasteNode = new DefaultMutableTreeNode(new PasteNode(paste));
 
     pasteNode.add(new DefaultMutableTreeNode(new PasteInfoNode(getMessage("ultimatepastebin.paste.key", paste.getKey()))));
     pasteNode.add(new DefaultMutableTreeNode(new PasteInfoNode(getMessage("ultimatepastebin.paste.url", paste.getUrl()))));

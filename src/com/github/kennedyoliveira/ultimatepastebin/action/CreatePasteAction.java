@@ -9,10 +9,12 @@ import com.intellij.openapi.actionSystem.AnAction;
 import com.intellij.openapi.actionSystem.AnActionEvent;
 import com.intellij.openapi.actionSystem.CommonDataKeys;
 import com.intellij.openapi.components.ServiceManager;
+import com.intellij.openapi.diagnostic.Logger;
 import com.intellij.openapi.editor.Editor;
 import com.intellij.openapi.fileTypes.FileType;
 import com.intellij.openapi.fileTypes.PlainTextFileType;
 import com.intellij.openapi.vfs.VirtualFile;
+
 
 import static com.github.kennedyoliveira.ultimatepastebin.i18n.MessageBundle.getMessage;
 
@@ -21,8 +23,11 @@ import static com.github.kennedyoliveira.ultimatepastebin.i18n.MessageBundle.get
  */
 public class CreatePasteAction extends AnAction {
 
+  private static final Logger logger = UltimatePasteBinUtils.logger;
+
   @Override
   public void actionPerformed(AnActionEvent e) {
+    logger.info("Gathering information for create paste");
     // Gets the selected text
     Editor editor = e.getData(CommonDataKeys.EDITOR);
 
@@ -33,20 +38,26 @@ public class CreatePasteAction extends AnAction {
 
     // If there are something selected
     if (editor != null && editor.getSelectionModel().getSelectedText() != null) {
+      logger.info("Using selected text as content");
       paste.setContent(editor.getSelectionModel().getSelectedText());
     } else {
+      logger.info("No text selected, checking for files selected");
       // Gets all the selected files
       VirtualFile[] selectedFiles = e.getData(CommonDataKeys.VIRTUAL_FILE_ARRAY);
 
       // When there is multiple files selected, i do nothing
       if (selectedFiles != null && selectedFiles.length == 1 && !selectedFiles[0].isDirectory()) {
-        fileType = selectedFiles[0].getFileType();
+        final VirtualFile selectedFile = selectedFiles[0];
+        logger.info("Getting content from selected file: " + selectedFile);
+        fileType = selectedFile.getFileType();
 
         // Try to get the Highlight based on the file, if not found use the Text
-        paste.setHighLight(UltimatePasteBinUtils.getHighlighFromVirtualFile(selectedFiles[0]).orElse(PasteHighLight.TEXT));
+        paste.setHighLight(UltimatePasteBinUtils.getHighlighFromVirtualFile(selectedFile).orElse(PasteHighLight.TEXT));
 
         // Set the content of the selected file to paste
-        UltimatePasteBinUtils.getFileContent(selectedFiles[0]).ifPresent(paste::setContent);
+        UltimatePasteBinUtils.getFileContent(selectedFile).ifPresent(paste::setContent);
+      } else {
+        logger.info("Multiple files selected, ignoring");
       }
     }
 

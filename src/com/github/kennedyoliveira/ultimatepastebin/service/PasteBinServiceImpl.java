@@ -4,8 +4,12 @@ import com.github.kennedyoliveira.pastebin4j.AccountCredentials;
 import com.github.kennedyoliveira.pastebin4j.PasteBin;
 import com.github.kennedyoliveira.pastebin4j.UserInformation;
 import com.github.kennedyoliveira.ultimatepastebin.settings.PasteBinConfigurationService;
+import com.github.kennedyoliveira.ultimatepastebin.utils.UltimatePasteBinUtils;
 import com.intellij.openapi.components.ServiceManager;
+import com.intellij.openapi.diagnostic.Logger;
 import com.intellij.openapi.util.text.StringUtil;
+
+import java.util.concurrent.atomic.AtomicBoolean;
 
 import static com.github.kennedyoliveira.ultimatepastebin.i18n.MessageBundle.getMessage;
 
@@ -14,7 +18,12 @@ import static com.github.kennedyoliveira.ultimatepastebin.i18n.MessageBundle.get
  */
 public class PasteBinServiceImpl implements PasteBinService {
 
-  private boolean initialized = false;
+  private static final Logger logger = UltimatePasteBinUtils.logger;
+
+  /**
+   * Use atomic because this can be accesed concurrently
+   */
+  private final AtomicBoolean initialized = new AtomicBoolean(false);
 
   private PasteBinConfigurationService configurationService;
 
@@ -34,26 +43,34 @@ public class PasteBinServiceImpl implements PasteBinService {
 
   @Override
   public boolean isCredentialsValid() {
-    if (!initialized)
+    if (initialized.compareAndSet(false, true)) {
+      logger.info("PasteBin service not initialized");
       initialize();
+    }
 
     return true;
   }
 
   @Override
   public void initialize() {
+    logger.info("Initializing PasteBin service");
     if (!configurationService.isAuthInfoPresent())
       throw new IllegalStateException(getMessage("ultimatepastebin.accountcredentials.null"));
 
     if (StringUtil.isEmpty(configurationService.getDevkey()))
       throw new IllegalStateException(getMessage("ultimatepastebin.accountcredentials.devkey.null"));
 
-    this.pasteBin = new PasteBin(new AccountCredentials(configurationService.getDevkey(), configurationService.getUsername(), configurationService.getPassword()));
+    this.pasteBin = new PasteBin(new AccountCredentials(configurationService.getDevkey(),
+                                                        configurationService.getUsername(),
+                                                        configurationService.getPassword()));
 
     // Fetchs the user information to check if the account credentials is valid
     try {
+      logger.info("Fetching user information...");
       this.userInformation = this.pasteBin.fetchUserInformation();
+      logger.info("Fetched user information succefully");
     } catch (Exception e) {
+      logger.error("Failed to fetch user information", e);
       invalidateCredentials();
       throw e;
     }
@@ -73,13 +90,14 @@ public class PasteBinServiceImpl implements PasteBinService {
 
   @Override
   public void checkCredentials() {
-    initialized = false;
+    initialized.set(false);
     initialize();
   }
 
   @Override
   public void invalidateCredentials() {
-    this.initialized = false;
+    logger.debug("Invalidating pastebin client credentials");
+    this.initialized.set(false);
     this.configurationService.setValidCredentials(false);
   }
 }

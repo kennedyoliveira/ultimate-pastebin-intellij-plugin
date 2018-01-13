@@ -24,6 +24,5 @@ public class UltimatePasteBinIcons {
   /**
    * @deprecated Constants only class
    */
-  private UltimatePasteBinIcons() {
-  }
+  private UltimatePasteBinIcons() {}
 }

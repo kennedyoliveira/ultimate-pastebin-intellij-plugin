@@ -7,12 +7,14 @@ import com.github.kennedyoliveira.pastebin4j.PasteVisibility;
 import com.github.kennedyoliveira.ultimatepastebin.service.PasteBinService;
 import com.github.kennedyoliveira.ultimatepastebin.service.ToolWindowService;
 import com.github.kennedyoliveira.ultimatepastebin.utils.ClipboardUtils;
+import com.github.kennedyoliveira.ultimatepastebin.utils.UltimatePasteBinUtils;
 import com.intellij.notification.Notification;
 import com.intellij.notification.NotificationListener;
 import com.intellij.notification.NotificationType;
 import com.intellij.notification.Notifications;
 import com.intellij.openapi.application.ApplicationManager;
 import com.intellij.openapi.components.ServiceManager;
+import com.intellij.openapi.diagnostic.Logger;
 import com.intellij.openapi.editor.Document;
 import com.intellij.openapi.editor.Editor;
 import com.intellij.openapi.editor.EditorFactory;
@@ -44,8 +46,9 @@ import static com.github.kennedyoliveira.ultimatepastebin.i18n.MessageBundle.get
  */
 public class CreatePasteForm extends DialogWrapper {
 
-  private final static Map<Integer, PasteVisibility> pasteVisibilityMap;
-  private final static Map<Integer, PasteExpiration> pasteExpirationMap;
+  private static final Logger logger = UltimatePasteBinUtils.logger;
+  private static final Map<Integer, PasteVisibility> pasteVisibilityMap;
+  private static final Map<Integer, PasteExpiration> pasteExpirationMap;
 
   static {
     pasteVisibilityMap = new HashMap<>(6);
@@ -81,9 +84,12 @@ public class CreatePasteForm extends DialogWrapper {
   public CreatePasteForm(@Nullable Project project, Paste paste, FileType fileType) {
     super(project);
 
+    logger.debug("Initializing create paste form");
+
     Objects.requireNonNull(paste);
 
     this.paste = paste;
+    logger.debug("Paste: " + paste);
 
     setTitle(getMessage("ultimatepastebin.createpaste.form.title"));
     setAutoAdjustable(true);
@@ -168,10 +174,13 @@ public class CreatePasteForm extends DialogWrapper {
           @Override
           public void run(@NotNull ProgressIndicator indicator) {
             try {
-              PasteBinService service = ServiceManager.getService(PasteBinService.class);
-              String url = service.getPasteBin().createPaste(paste);
+              logger.info("Creating a new paste: " + paste);
+              final PasteBinService service = ServiceManager.getService(PasteBinService.class);
+              logger.info("Paste created succefully");
 
-              String message = getMessage("ultimatepastebin.actions.createpaste.ok.notification.message", url);
+              final String url = service.getPasteBin().createPaste(paste);
+
+              final String message = getMessage("ultimatepastebin.actions.createpaste.ok.notification.message", url);
 
               ClipboardUtils.copyToClipboard(url);
 
@@ -182,10 +191,11 @@ public class CreatePasteForm extends DialogWrapper {
                                                         NotificationListener.URL_OPENING_LISTENER), project);
 
               // Updates the pastes...
-              ApplicationManager.getApplication().invokeLater(() -> {
-                ServiceManager.getService(ToolWindowService.class).fetchUserPastes();
-              });
+              ApplicationManager.getApplication()
+                                .invokeLater(() -> ServiceManager.getService(ToolWindowService.class)
+                                                                                  .fetchUserPastes());
             } catch (Exception e1) {
+              logger.error("Failed to create paste", e1);
               Notifications.Bus.notify(new Notification("Error creating a paste",
                                                         "Ultimate PasteBin",
                                                         getMessage("ultimatepastebin.actions.createpaste.error.notification.message", e1.getMessage()),

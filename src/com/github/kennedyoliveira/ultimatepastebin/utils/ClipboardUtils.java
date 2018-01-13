@@ -11,10 +11,9 @@ import java.awt.datatransfer.StringSelection;
  */
 public class ClipboardUtils {
 
-  private static final Logger log = UltimatePasteBinUtils.log;
+  private static final Logger log = UltimatePasteBinUtils.logger;
 
-  private ClipboardUtils() {
-  }
+  private ClipboardUtils() {}
 
   /**
    * <p>Copy the {@code content} to clipboard.</p>
@@ -23,12 +22,13 @@ public class ClipboardUtils {
    * @param content Content to be copied
    */
   public static void copyToClipboard(String content) {
+    log.debug("Copying content to Clipboard: {}", content);
     if (StringUtil.isNotEmpty(content)) {
       try {
         // Copy the link to the clipboard
         Toolkit.getDefaultToolkit().getSystemClipboard().setContents(new StringSelection(content), null);
       } catch (HeadlessException e) {
-        log.info("Error while coping content to clipboard", e);
+        log.error("Error while coping content to clipboard", e);
       }
     }
   }

@@ -1,6 +1,7 @@
 package com.github.kennedyoliveira.ultimatepastebin.utils;
 
 import com.github.kennedyoliveira.pastebin4j.PasteHighLight;
+import com.intellij.openapi.diagnostic.Logger;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
@@ -16,6 +17,7 @@ import static java.util.stream.Collectors.toMap;
  */
 public class SyntaxHighlighUtils {
 
+  private static final Logger logger = UltimatePasteBinUtils.logger;
   private static final Map<String, PasteHighLight> highLightByFileType;
 
   static {
@@ -38,6 +40,7 @@ public class SyntaxHighlighUtils {
   }
 
   private SyntaxHighlighUtils() {
+    logger.info("Available file highlights: " + highLightByFileType);
   }
 
   /**

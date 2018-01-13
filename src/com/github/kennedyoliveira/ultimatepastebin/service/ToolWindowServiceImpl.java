@@ -20,19 +20,21 @@ import org.jetbrains.annotations.NotNull;
 
 import javax.swing.tree.DefaultMutableTreeNode;
 import javax.swing.tree.TreePath;
-import java.util.List;
-import java.util.Optional;
+import java.util.*;
+import java.util.stream.StreamSupport;
 
 import static com.github.kennedyoliveira.ultimatepastebin.i18n.MessageBundle.getMessage;
 import static com.intellij.util.ui.UIUtil.invokeLaterIfNeeded;
 import static java.util.Comparator.comparing;
+import static java.util.Spliterator.IMMUTABLE;
+import static java.util.Spliterator.NONNULL;
 
 /**
  * Service for interacting with Ultimate Pastebin tool window
  */
 public class ToolWindowServiceImpl implements ToolWindowService {
 
-  private static final Logger log = UltimatePasteBinUtils.log;
+  private static final Logger logger = UltimatePasteBinUtils.logger;
 
   /**
    * Node representing the User Information
@@ -96,14 +98,18 @@ public class ToolWindowServiceImpl implements ToolWindowService {
 
   @Override
   public void fetchPastes() {
+    logger.debug("Fetching pastes");
     new Task.Backgroundable(null, "Fetching Data from PasteBin", false) {
       @Override
       public void run(@NotNull ProgressIndicator indicator) {
+        logger.info("Initializing fetch pastes task");
         try {
           indicator.setText(getMessage("ultimatepastebin.settings.login.validation.title"));
 
           if (pasteBinService.isCredentialsValid()) {
-            ((UserNode) userNode.getUserObject()).setUserInformation(pasteBinService.getPasteBin().getUserInformation().orElse(null));
+            ((UserNode) userNode.getUserObject()).setUserInformation(pasteBinService.getPasteBin()
+                                                                                    .getUserInformation()
+                                                                                    .orElse(null));
 
             indicator.setIndeterminate(false);
             indicator.setText(getMessage("ultimatepastebin.tasks.fetching.trendspastes"));
@@ -133,14 +139,19 @@ public class ToolWindowServiceImpl implements ToolWindowService {
    * Fetch user pastes and update the tree with new added pastes.
    */
   private void fetchUserPastesAndUpdateUI() {
+    logger.info("Fetching user pastes...");
     // Get the user pastes
-    List<Paste> userPastes = pasteBinService.getPasteBin().listUserPastes(pasteBinConfigurationService.getTotalPastesToFetch());
+    List<Paste> userPastes = pasteBinService.getPasteBin()
+                                            .listUserPastes(pasteBinConfigurationService.getTotalPastesToFetch());
+    logger.info("Fetched " + userPastes.size() + " pastes");
 
     // removes all the previous pastes
+    logger.debug("Cleaning user paste nodes");
     userNode.removeAllChildren();
     invokeLaterIfNeeded(tree::updateUI);
 
     // Create a paste node for each user paste and add to the userNode
+    logger.debug("Adding user pastes to the ToolWindow");
     userPastes.stream().map(PasteNodeUtil::createNodeForPaste).forEach(userNode::add);
   }
 
@@ -148,15 +159,22 @@ public class ToolWindowServiceImpl implements ToolWindowService {
    * Fetch Trend Pastes and update the tree with new added pastes.
    */
   private void fetchTrendPastesAndUpdateUI() {
+    logger.info("Fetching trend pastes");
     // Get the trending pastes
     List<Paste> pastes = pasteBinService.getPasteBin().listTrendingPastes();
+    logger.info("Fetched " + pastes.size() + " trend pastes");
 
     // removes all the previous pastes
+    logger.debug("Cleaning trend node pastes");
     trendsNode.removeAllChildren();
     invokeLaterIfNeeded(tree::updateUI);
 
     // Create a paste node for each trending pastes and add to the trend node
-    pastes.stream().sorted(comparing(Paste::getHits).reversed()).map(PasteNodeUtil::createNodeForPaste).forEach(trendsNode::add);
+    logger.debug("Adding trend pastes to the ToolWindow");
+    pastes.stream()
+          .sorted(comparing(Paste::getHits).reversed())
+          .map(PasteNodeUtil::createNodeForPaste)
+          .forEach(trendsNode::add);
   }
 
   @Override
@@ -168,11 +186,13 @@ public class ToolWindowServiceImpl implements ToolWindowService {
           indicator.setText(getMessage("ultimatepastebin.settings.login.validation.title"));
 
           if (pasteBinService.isCredentialsValid()) {
-            ((UserNode) userNode.getUserObject()).setUserInformation(pasteBinService.getPasteBin().getUserInformation().orElse(null));
+            ((UserNode) userNode.getUserObject()).setUserInformation(pasteBinService.getPasteBin()
+                                                                                    .getUserInformation()
+                                                                                    .orElse(null));
 
             indicator.setText(getMessage("ultimatepastebin.tasks.fetching.userpaste"));
 
-            fetchUserPastes();
+            fetchUserPastesAndUpdateUI();
           }
         } catch (Exception e) {
           handleFetchingErrors(e);
@@ -182,7 +202,7 @@ public class ToolWindowServiceImpl implements ToolWindowService {
   }
 
   @Override
-  public void fetchTrendingPastes() {
+  public void fetchTrendPastes() {
     new Task.Backgroundable(null, getMessage("ultimatepastebin.data.fetching"), false) {
       @Override
       public void run(@NotNull ProgressIndicator indicator) {
@@ -190,11 +210,13 @@ public class ToolWindowServiceImpl implements ToolWindowService {
           indicator.setText(getMessage("ultimatepastebin.settings.login.validation.title"));
 
           if (pasteBinService.isCredentialsValid()) {
-            ((UserNode) userNode.getUserObject()).setUserInformation(pasteBinService.getPasteBin().getUserInformation().orElse(null));
+            ((UserNode) userNode.getUserObject()).setUserInformation(pasteBinService.getPasteBin()
+                                                                                    .getUserInformation()
+                                                                                    .orElse(null));
 
             indicator.setText(getMessage("ultimatepastebin.tasks.fetching.trendspastes"));
 
-            fetchTrendingPastes();
+            fetchTrendPastesAndUpdateUI();
           }
         } catch (Exception e) {
           handleFetchingErrors(e);
@@ -209,7 +231,7 @@ public class ToolWindowServiceImpl implements ToolWindowService {
    * @param e Exception ocurred.
    */
   private void handleFetchingErrors(Exception e) {
-    log.info("Error while fetching pastes", e);
+    logger.info("Error while fetching pastes", e);
     ((UserNode) userNode.getUserObject()).setUserInformation(null);
     Notifications.Bus.notify(new Notification("Error fetching pastes",
                                               "Ultimate PasteBin",
@@ -231,6 +253,30 @@ public class ToolWindowServiceImpl implements ToolWindowService {
     }
 
     return Optional.empty();
+  }
+
+  @Override
+  public boolean isTrendPast(Paste paste) {
+    if (paste == null)
+      return false;
+
+    final Enumeration childrens = trendsNode.breadthFirstEnumeration();
+
+    return StreamSupport.stream(Spliterators.spliteratorUnknownSize(new Iterator<DefaultMutableTreeNode>() {
+      @Override
+      public boolean hasNext() {
+        return childrens.hasMoreElements();
+      }
+
+      @Override
+      public DefaultMutableTreeNode next() {
+        return ((DefaultMutableTreeNode) childrens.nextElement());
+      }
+    }, IMMUTABLE | NONNULL), false)
+                        .map(this::getPaste)
+                        .filter(Optional::isPresent)
+                        .anyMatch(e -> e.get().equals(paste)); // checks if equal this paste
+
   }
 
   private Optional<Paste> getPaste(DefaultMutableTreeNode selectedNode) {

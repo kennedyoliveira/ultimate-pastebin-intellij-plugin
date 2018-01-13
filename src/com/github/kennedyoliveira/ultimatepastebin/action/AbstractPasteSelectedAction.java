@@ -17,10 +17,12 @@ public abstract class AbstractPasteSelectedAction extends AnAction {
   public void update(AnActionEvent e) {
     super.update(e);
 
-    ToolWindowService toolWindowService = ServiceManager.getService(ToolWindowService.class);
+    e.getPresentation().setEnabled(getSelectedPaste().isPresent());
+  }
 
-    Optional<Paste> selectedPaste = toolWindowService.getSelectedPaste();
+  protected Optional<Paste> getSelectedPaste() {
+    final ToolWindowService toolWindowService = ServiceManager.getService(ToolWindowService.class);
 
-    e.getPresentation().setEnabled(selectedPaste.isPresent());
+    return toolWindowService.getSelectedPaste();
   }
 }

@@ -17,7 +17,7 @@ import javax.swing.*;
 import java.util.Locale;
 import java.util.Objects;
 
-import static com.github.kennedyoliveira.ultimatepastebin.utils.UltimatePasteBinUtils.log;
+import static com.github.kennedyoliveira.ultimatepastebin.utils.UltimatePasteBinUtils.logger;
 import static com.github.kennedyoliveira.ultimatepastebin.utils.UltimatePasteBinUtils.showErrorMessageBox;
 
 /**
@@ -105,7 +105,7 @@ public class PasteBinConfigurableSettings implements SearchableConfigurable {
           service.fetchPastes();
         } catch (Exception e) {
           // if there is any error, show to user
-          log.error("Logging into pastebin", e);
+          logger.error("Logging into pastebin", e);
           showErrorMessageBox(null, e.getMessage(), "Error While Logging with the Credentials Provided.");
         }
       } else {
@@ -138,6 +138,6 @@ public class PasteBinConfigurableSettings implements SearchableConfigurable {
 
   @Override
   public void disposeUIResources() {
-    log.debug("Disposing Configuration Settings UI");
+    logger.debug("Disposing Configuration Settings UI");
   }
 }

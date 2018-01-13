@@ -2,12 +2,11 @@ package com.github.kennedyoliveira.ultimatepastebin.settings;
 
 import com.github.kennedyoliveira.ultimatepastebin.UltimatePasteBinConstants;
 import com.github.kennedyoliveira.ultimatepastebin.utils.UltimatePasteBinUtils;
+import com.intellij.credentialStore.CredentialStore;
+import com.intellij.credentialStore.Credentials;
 import com.intellij.ide.passwordSafe.PasswordSafe;
 import com.intellij.ide.passwordSafe.PasswordSafeException;
-import com.intellij.openapi.components.PersistentStateComponent;
-import com.intellij.openapi.components.ServiceManager;
-import com.intellij.openapi.components.State;
-import com.intellij.openapi.components.Storage;
+import com.intellij.openapi.components.*;
 import com.intellij.openapi.diagnostic.Logger;
 import com.intellij.openapi.util.text.StringUtil;
 import org.jdom.Element;
@@ -18,7 +17,9 @@ import org.jetbrains.annotations.Nullable;
 import java.util.Objects;
 import java.util.Optional;
 
+import static com.github.kennedyoliveira.ultimatepastebin.UltimatePasteBinConstants.DEFAULT_TOTAL_PASTES_TO_FETCH;
 import static com.github.kennedyoliveira.ultimatepastebin.UltimatePasteBinConstants.MAX_PASTES_TO_FETCH;
+import static com.intellij.credentialStore.CredentialAttributesKt.CredentialAttributes;
 
 /**
  * <p>Configuration service for saving and loading plugin settings.</p>
@@ -28,7 +29,7 @@ import static com.github.kennedyoliveira.ultimatepastebin.UltimatePasteBinConsta
 @State(name = "ultimatepastebin", storages = @Storage(id = "main", file = "ultimatepastebin_settings.xml"))
 public class PasteBinConfigurationServiceImpl implements PersistentStateComponent<Element>, PasteBinConfigurationService {
 
-  private static final Logger log = UltimatePasteBinUtils.log;
+  private static final Logger log = UltimatePasteBinUtils.logger;
   private static final String ULTIMATE_PASTEBIN_PASSWORD_KEY = "ULTIMATE_PASTEBIN_KEY";
 
   /**
@@ -84,11 +85,16 @@ public class PasteBinConfigurationServiceImpl implements PersistentStateComponen
     if (currentLanguage != null)
       element.setAttribute("currentLanguage", currentLanguage);
 
+    if (log.isTraceEnabled())
+      log.trace("Configuration: " + element);
+
     return element;
   }
 
   @Override
   public void loadState(Element state) {
+    log.info("Loading saved configuration");
+
     this.devkey = state.getAttributeValue("devkey", "");
     this.username = state.getAttributeValue("username", "");
 
@@ -98,34 +104,35 @@ public class PasteBinConfigurationServiceImpl implements PersistentStateComponen
     try {
       this.totalPastesToFetch = Integer.parseInt(state.getAttributeValue("totalPastesToFetch"));
     } catch (NumberFormatException e) {
+      log.error("Invalid configuration for [totalPastesToFetch] = " + state.getAttributeValue("totalPastesToFetch") +
+                    ", falling back to " + DEFAULT_TOTAL_PASTES_TO_FETCH, e);
       // If fails to recover the value, sets the default
       this.totalPastesToFetch = UltimatePasteBinConstants.DEFAULT_TOTAL_PASTES_TO_FETCH;
     }
 
     Optional.ofNullable(state.getAttributeValue("currentLanguage"))
             .ifPresent(this::setCurrentLanguage);
+
+    log.info("Configuration loaded: " +
+                 "\nusername: " + username +
+                 "\nversion: " + version +
+                 "\ntotalPastesToFetch: " + totalPastesToFetch +
+                 "\ncurrentLanguage: " + currentLanguage);
   }
 
   @Override
   public String getPassword() {
-    String password = null;
-
-    try {
-      password = PasswordSafe.getInstance().getPassword(null, PasteBinConfigurationServiceImpl.class, ULTIMATE_PASTEBIN_PASSWORD_KEY);
-    } catch (PasswordSafeException e) {
-      log.info("Error getting the password for the key: " + ULTIMATE_PASTEBIN_PASSWORD_KEY, e);
-    }
+    final String password = ServiceManager.getService(PasswordSafe.class)
+                                          .getPassword(CredentialAttributes(PasteBinConfigurationServiceImpl.class,
+                                                                            ULTIMATE_PASTEBIN_PASSWORD_KEY));
 
     return StringUtil.notNullize(password);
   }
 
   @Override
   public void setPassword(String password) {
-    try {
-      PasswordSafe.getInstance().storePassword(null, PasteBinConfigurationServiceImpl.class, ULTIMATE_PASTEBIN_PASSWORD_KEY, password);
-    } catch (PasswordSafeException e) {
-      log.info("Error while storing the password for the key: " + ULTIMATE_PASTEBIN_PASSWORD_KEY, e);
-    }
+    ServiceManager.getService(PasswordSafe.class)
+                  .setPassword(CredentialAttributes(PasteBinConfigurationServiceImpl.class, ULTIMATE_PASTEBIN_PASSWORD_KEY), password);
   }
 
   @Override

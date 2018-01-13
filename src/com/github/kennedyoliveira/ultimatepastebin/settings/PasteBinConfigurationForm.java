@@ -74,7 +74,7 @@ public class PasteBinConfigurationForm extends JPanel {
    * Adds the listeners to the components
    */
   public void createListeners() {
-    getDevKeyButton.addActionListener(e -> BrowserUtil.browse("http://pastebin.com/api#1"));
+    getDevKeyButton.addActionListener(e -> BrowserUtil.browse("https://pastebin.com/api#1"));
 
     checkAccountCredentialsButton.addActionListener(e -> checkCredentialsAccount());
 
@@ -100,7 +100,7 @@ public class PasteBinConfigurationForm extends JPanel {
   }
 
   /**
-   * Try to log into PasteBin.
+   * Try to logger into PasteBin.
    *
    * @param username The username filled in the form
    * @param password The password filled in the form

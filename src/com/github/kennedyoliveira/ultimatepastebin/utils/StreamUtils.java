@@ -12,10 +12,9 @@ import java.util.Objects;
  */
 public class StreamUtils {
 
-  private static final Logger log = UltimatePasteBinUtils.log;
+  private static final Logger logger = UltimatePasteBinUtils.logger;
 
-  private StreamUtils() {
-  }
+  private StreamUtils() {}
 
   /**
    * Read all lines for the input stream and closes it
@@ -52,7 +51,7 @@ public class StreamUtils {
       try {
         closeable.close();
       } catch (Exception e) {
-        log.info("Error when closing a closeable resource", e);
+        logger.error("Error when closing a closeable resource", e);
       }
     }
   }

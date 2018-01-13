@@ -25,7 +25,7 @@ public class UltimatePasteBinUtils {
   /**
    * General Logger for UltimatePasteBin
    */
-  public static final Logger log = Logger.getInstance("ultimatepastebin");
+  public static final Logger logger = Logger.getInstance("com.github.kennedyoliveira.ultimatepastebin");
 
   private UltimatePasteBinUtils() {}
 
@@ -100,7 +100,7 @@ public class UltimatePasteBinUtils {
     try {
       return Optional.of(new String(virtualFile.contentsToByteArray(), virtualFile.getCharset()));
     } catch (IOException e) {
-      log.debug("Error while fetching the contents of a virtual file [" + virtualFile.getName() + "]", e);
+      logger.error("Error while fetching the contents of a virtual file [" + virtualFile.getName() + "]", e);
       return Optional.empty();
     }
   }

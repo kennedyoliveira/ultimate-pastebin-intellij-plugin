@@ -25,10 +25,18 @@ public interface ToolWindowService {
   /**
    * Initiate the action for fetching trend pastes and update the toolwindow with results
    */
-  void fetchTrendingPastes();
+  void fetchTrendPastes();
 
   /**
    * @return A selected paste in the {@link #getTree()}
    */
   Optional<Paste> getSelectedPaste();
+
+  /**
+   * Checks of the {@code paste} is a Trend paste.
+   *
+   * @param paste Paste to be checked.
+   * @return {@code true} if trend, {@code false} otherwise.
+   */
+  boolean isTrendPast(Paste paste);
 }

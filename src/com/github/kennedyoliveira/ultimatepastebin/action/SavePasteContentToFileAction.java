@@ -1,14 +1,17 @@
 package com.github.kennedyoliveira.ultimatepastebin.action;
 
 import com.github.kennedyoliveira.pastebin4j.Paste;
+import com.github.kennedyoliveira.ultimatepastebin.component.UltimatePasteBin;
 import com.github.kennedyoliveira.ultimatepastebin.service.PasteBinService;
 import com.github.kennedyoliveira.ultimatepastebin.service.ToolWindowService;
+import com.github.kennedyoliveira.ultimatepastebin.utils.UltimatePasteBinUtils;
 import com.intellij.ide.actions.ShowFilePathAction;
 import com.intellij.notification.Notification;
 import com.intellij.notification.NotificationType;
 import com.intellij.notification.Notifications;
 import com.intellij.openapi.actionSystem.AnActionEvent;
 import com.intellij.openapi.components.ServiceManager;
+import com.intellij.openapi.diagnostic.Logger;
 import com.intellij.openapi.fileChooser.FileChooserFactory;
 import com.intellij.openapi.fileChooser.FileSaverDescriptor;
 import com.intellij.openapi.fileChooser.FileSaverDialog;
@@ -28,39 +31,48 @@ import static com.github.kennedyoliveira.ultimatepastebin.i18n.MessageBundle.get
  */
 public class SavePasteContentToFileAction extends AbstractPasteSelectedAction {
 
+  private static final Logger logger = UltimatePasteBinUtils.logger;
+
   @Override
   public void actionPerformed(AnActionEvent e) {
-    ToolWindowService toolWindowService = ServiceManager.getService(ToolWindowService.class);
+    logger.info("Initializing SavePasteContentToFileAction");
+    final ToolWindowService toolWindowService = ServiceManager.getService(ToolWindowService.class);
 
-    Optional<Paste> selectedPaste = toolWindowService.getSelectedPaste();
+    final Optional<Paste> selectedPaste = toolWindowService.getSelectedPaste();
 
     if (selectedPaste.isPresent()) {
-      Paste paste = selectedPaste.get();
+      final Paste paste = selectedPaste.get();
 
-      FileSaverDescriptor fileSaverDescriptor = new FileSaverDescriptor(getMessage("ultimatepastebin.actions.copypastecontentstofile.savefiledialog.title"),
+      final FileSaverDescriptor fileSaverDescriptor = new FileSaverDescriptor(getMessage("ultimatepastebin.actions.copypastecontentstofile.savefiledialog.title"),
                                                                         getMessage("ultimatepastebin.actions.copypastecontentstofile.savefiledialog.description"),
                                                                         "txt",
                                                                         paste.getHighLight().toString());
 
-      FileSaverDialog saveFileDialog = FileChooserFactory.getInstance().createSaveFileDialog(fileSaverDescriptor, e.getProject());
-      VirtualFileWrapper fileToSave = saveFileDialog.save(null, null);
+      logger.debug("Showing save dialog");
+      final FileSaverDialog saveFileDialog = FileChooserFactory.getInstance().createSaveFileDialog(fileSaverDescriptor, e.getProject());
+      final VirtualFileWrapper fileToSave = saveFileDialog.save(null, null);
 
+      logger.info("Save content to file: " + fileToSave);
       if (fileToSave != null) {
         new Task.Backgroundable(null, getMessage("ultimatepastebin.actions.copypastecontentstofile.task.title"), false) {
           @Override
           public void run(@NotNull ProgressIndicator indicator) {
+            logger.info("Starting save paste contents to file task");
+
             try {
               indicator.setText(getMessage("ultimatepastebin.tasks.fetchingcontent.message"));
-              PasteBinService service = ServiceManager.getService(PasteBinService.class);
+              final PasteBinService service = ServiceManager.getService(PasteBinService.class);
 
-              String pasteContent = service.getPasteBin().getPasteContent(paste);
+              logger.info("Fetching paste content");
+              final String pasteContent = service.getPasteBin().getPasteContent(paste);
 
               indicator.setText(getMessage("ultimatepastebin.tasks.savingtodisk.message"));
               indicator.setText2(getMessage("ultimatepastebin.tasks.savingtodisk.file", fileToSave.getFile().getAbsolutePath()));
 
+              logger.info("Writing paste content to disk");
               Files.write(fileToSave.getFile().toPath(), pasteContent.getBytes());
 
-              String fileManager = SystemInfo.isMac ? getMessage("ultimatepastebin.actions.showfile.macosx") : getMessage("ultimatepastebin.actions.showfile.other",
+              final String fileManager = SystemInfo.isMac ? getMessage("ultimatepastebin.actions.showfile.macosx") : getMessage("ultimatepastebin.actions.showfile.other",
                                                                                                                           ShowFilePathAction.getFileManagerName());
 
               Notifications.Bus.notify(new Notification("Paste contents saved to file",
@@ -69,6 +81,7 @@ public class SavePasteContentToFileAction extends AbstractPasteSelectedAction {
                                                         NotificationType.INFORMATION,
                                                         (notification, event) -> ShowFilePathAction.openFile(fileToSave.getFile())), e.getProject());
             } catch (Exception e) {
+              logger.error("Failed to save paste contents to disk", e);
               Notifications.Bus.notify(new Notification("Error fetching paste contents",
                                                         "Ultimate PasteBin",
                                                         getMessage("ultimatepastebin.actions.copypastecontent.genericerror.notification.message", e.getMessage()),
@@ -77,6 +90,8 @@ public class SavePasteContentToFileAction extends AbstractPasteSelectedAction {
           }
         }.queue();
       }
+    } else {
+      logger.info("No paste selected to save content");
     }
   }
 
